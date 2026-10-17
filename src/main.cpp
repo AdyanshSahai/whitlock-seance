@@ -16,7 +16,7 @@ static Eyes eyes;
 
 static Mode mode = Mode::Idle;
 static bool present = false;
-static uint32_t presentSince = 0, goneSince = 0;
+static uint32_t presentSince = 0, goneSince = 0, rawSince = 0;
 static uint32_t lastActivity = 0;
 
 // murmur scheduler
@@ -141,7 +141,15 @@ static void startRare(uint32_t now) {
 static void updatePresence(uint32_t now) {
   bool raw = us.present();
   if (!present) {
-    if (raw) onApproach(now);
+    if (!raw) {
+      rawSince = 0;
+    } else {
+      if (!rawSince) rawSince = now ? now : 1;
+      if (now - rawSince >= APPROACH_DELAY_MS) {
+        rawSince = 0;
+        onApproach(now);
+      }
+    }
     return;
   }
   lastActivity = now;

@@ -57,6 +57,7 @@ constexpr uint32_t US_TIMEOUT_MS = 35;
 constexpr float US_NO_ECHO_CM = 999.0f;
 
 // ============================ behaviour timing ===============================
+constexpr uint32_t APPROACH_DELAY_MS = 2000;    // must stay in range this long before the mask reacts (0 = instant)
 constexpr uint32_t LEAVE_GONE_MS = 1500;        // gone this long = they left
 constexpr uint32_t LEAVE_MIN_PRESENT_MS = T(3000, 1000); // must have been there this long for flare/wait
 constexpr uint32_t FLARE_HOLD_MS = 100, FLARE_DECAY_MS = 1500;
