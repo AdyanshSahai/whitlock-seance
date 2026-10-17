@@ -210,7 +210,9 @@ static void rareStep(uint32_t now) {
 
 static void tick(uint32_t now) {
   bat.update(now);
+#if BATTERY_CUTOFF
   if (bat.low()) goDead("battery");
+#endif
 
   updatePresence(now);
   handleIr(now);
