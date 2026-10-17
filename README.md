@@ -1,0 +1,53 @@
+# Whitlock séance display
+
+One ESP32-S2 Mini (PlatformIO, Arduino). All tunables are in `src/config.h`.
+
+## Wiring
+
+```
+GPIO17 DAC1 -> 100nF -> 10k trimpot -> PAM8302 #1 IN+  (IN- to GND)   murmur, under table
+GPIO18 DAC2 -> 100nF -> 10k trimpot -> PAM8302 #2 IN+  (IN- to GND)   Whitlock's lines, hollow book
+GPIO11 / GPIO12   PAM #1 / #2 SD (config: USE_AMP_SD, AMP_ON_LEVEL)
+GPIO4  WS2812 data via 330R (+10k to GND so it can't float in deep sleep)
+GPIO5  HC-SR04 TRIG        GPIO6  ECHO via 1k (top) / 2k (bottom) divider
+GPIO8  FC-51 OUT (active-low)
+GPIO10 hidden finale contact to GND
+GPIO1  cell+ -> 100k -> pin -> 100k -> GND, 100nF pin to GND
+GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protected)
+```
+
+- J5019 5V goes to the S2's 5V pin through a Schottky, so USB can't back-feed the boost.
+- Put 100µF + 100nF at each PAM's VDD and across the strip.
+- A 1N400x in series with the strip's 5V feed makes the 3.3V data line reliable.
+- Power the FC-51 from 3V3 (or divide its output if on 5V).
+
+## Audio
+
+```
+audio/murmur/*.wav   idle loops (tens of seconds)
+audio/notthat/*.wav  "not that one" + variants
+audio/wait/*.wav     "wait"
+audio/chant/*.wav    finale chant (loops)
+python3 tools/wav2c.py          # writes src/audio_data.cpp (8 kHz, 8-bit, mono)
+```
+
+`src/audio_data.cpp` currently holds synthesised placeholders. Run the script with
+your real files, then rebuild. It stops if the total exceeds ~3.5 MB.
+
+## Finale (hidden)
+
+1. Hold the hidden contact for 3s. One faint pulse in the right eye means armed
+   for 10 minutes. Hold 3s again to disarm (left-eye pulse).
+2. Place the real book on the IR sensor and keep it there for 1s.
+3. Eyes go red, ch1 switches to the chant, and presence detection is ignored. It
+   stays that way until power-off.
+
+## First checks on hardware
+
+1. Set `DEBUG_LOG 1`, open the serial monitor with nobody near, and check the
+   `d=` distance. It should read 999 or well over 110cm. If the table or a wall
+   reads under 80cm, re-aim the sensor.
+2. Walk up to it and check the thresholds (80cm present / 110cm gone).
+3. Check the IR with the real books and turn the trimpot down to about 8–10cm.
+4. Compare the `bat=` reading to a multimeter and adjust `BAT_CAL`.
+5. Set the trimpot volumes, then set `DEBUG_LOG 0` for the install.
