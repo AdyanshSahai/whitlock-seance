@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1190 1050" width="1190" height="1050">
+<rect width="1190" height="1050" fill="#fff"/>
+<text x="30" y="32" font-size="21" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Whitlock seance display: bench schematic (USB powered)</text>
+<text x="30" y="52" font-size="12" text-anchor="start" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">ESP32-S2-DevKitM-1. Red = supply, black = signal / GND. The onboard RGB LED (GPIO18) must be removed.</text>
+<rect x="150" y="70" width="230" height="960" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="265.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">ESP32-S2-DevKitM-1</text>
+<text x="158" y="134" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">5V</text>
+<line x1="124" y1="130" x2="150" y2="130" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="124" y1="130" x2="124" y2="121" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="114" y1="121" x2="134" y2="121" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="124" y="116" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V</text>
+<text x="158" y="169" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">3V3</text>
+<line x1="124" y1="165" x2="150" y2="165" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="124" y1="165" x2="124" y2="156" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="114" y1="156" x2="134" y2="156" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="124" y="151" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+3V3</text>
+<text x="158" y="204" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="124" y1="200" x2="150" y2="200" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="124" y1="200" x2="124" y2="206" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="114" y1="206" x2="134" y2="206" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="118" y1="211" x2="130" y2="211" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="122" y1="216" x2="126" y2="216" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="372" y="144" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO4</text>
+<text x="372" y="309" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO5</text>
+<text x="372" y="349" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO6</text>
+<text x="372" y="554" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO8</text>
+<text x="372" y="726" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO17</text>
+<text x="372" y="786" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO11</text>
+<text x="372" y="926" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO18</text>
+<text x="372" y="986" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO12</text>
+<text x="265.0" y="260" font-size="11" text-anchor="middle" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">not used yet:</text>
+<text x="265.0" y="276" font-size="11" text-anchor="middle" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO1 battery sense, GPIO13</text>
+<rect x="780" y="70" width="200" height="150" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="880.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">WS2812 strip (eyes)</text>
+<line x1="760" y1="112" x2="780" y2="112" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="116" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">5V</text>
+<line x1="734" y1="112" x2="760" y2="112" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="112" x2="734" y2="103" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="103" x2="744" y2="103" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="734" y="98" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V</text>
+<line x1="760" y1="140" x2="780" y2="140" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="144" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">DIN</text>
+<line x1="760" y1="190" x2="780" y2="190" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="194" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="734" y1="190" x2="760" y2="190" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="190" x2="734" y2="196" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="196" x2="744" y2="196" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="201" x2="740" y2="201" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="206" x2="736" y2="206" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="140" x2="760" y2="140" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="498" y="132" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="520" y="126" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">110</text>
+<rect x="618" y="132" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="640" y="126" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">110</text>
+<text x="580" y="122" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">220 ohm total</text>
+<text x="880.0" y="212" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">100uF across 5V-GND</text>
+<rect x="780" y="240" width="200" height="200" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="880.0" y="260" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">HC-SR04 (ultrasonic)</text>
+<line x1="760" y1="280" x2="780" y2="280" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="284" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VCC</text>
+<line x1="734" y1="280" x2="760" y2="280" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="280" x2="734" y2="271" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="271" x2="744" y2="271" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="734" y="266" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V</text>
+<line x1="760" y1="305" x2="780" y2="305" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="309" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">TRIG</text>
+<line x1="760" y1="345" x2="780" y2="345" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="349" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">ECHO</text>
+<line x1="760" y1="405" x2="780" y2="405" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="409" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="734" y1="405" x2="760" y2="405" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="405" x2="734" y2="411" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="411" x2="744" y2="411" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="416" x2="740" y2="416" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="421" x2="736" y2="421" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="305" x2="760" y2="305" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="345" x2="640" y2="345" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="640" y1="345" x2="760" y2="345" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="698" y="337" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="720" y="331" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
+<circle cx="640" cy="345" r="4.5" fill="#222"/>
+<line x1="640" y1="345" x2="640" y2="455" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="632" y="354" width="16" height="44" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="654" y="380" font-size="12" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
+<rect x="632" y="404" width="16" height="44" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="654" y="430" font-size="12" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
+<line x1="640" y1="455" x2="640" y2="461" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="630" y1="461" x2="650" y2="461" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="634" y1="466" x2="646" y2="466" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="638" y1="471" x2="642" y2="471" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="560" y="330" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">echo divider</text>
+<rect x="780" y="480" width="200" height="140" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="880.0" y="500" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">FC-51 (IR sensor)</text>
+<line x1="760" y1="522" x2="780" y2="522" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="526" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VCC</text>
+<line x1="734" y1="522" x2="760" y2="522" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="522" x2="734" y2="513" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="513" x2="744" y2="513" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="734" y="508" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+3V3</text>
+<line x1="760" y1="550" x2="780" y2="550" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="554" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT</text>
+<line x1="760" y1="595" x2="780" y2="595" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="599" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="734" y1="595" x2="760" y2="595" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="595" x2="734" y2="601" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="601" x2="744" y2="601" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="606" x2="740" y2="606" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="611" x2="736" y2="611" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="550" x2="760" y2="550" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="780" y="650" width="200" height="180" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="880.0" y="670" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">PAM8302 #1 (murmur)</text>
+<line x1="760" y1="692" x2="780" y2="692" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="696" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VIN</text>
+<line x1="734" y1="692" x2="760" y2="692" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="692" x2="734" y2="683" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="683" x2="744" y2="683" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="734" y="678" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V</text>
+<line x1="760" y1="722" x2="780" y2="722" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="726" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN+</text>
+<line x1="760" y1="752" x2="780" y2="752" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="756" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN-</text>
+<line x1="734" y1="752" x2="760" y2="752" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="752" x2="734" y2="758" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="758" x2="744" y2="758" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="763" x2="740" y2="763" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="768" x2="736" y2="768" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="760" y1="782" x2="780" y2="782" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="786" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">SD</text>
+<line x1="760" y1="812" x2="780" y2="812" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="816" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="734" y1="812" x2="760" y2="812" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="812" x2="734" y2="818" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="818" x2="744" y2="818" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="823" x2="740" y2="823" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="828" x2="736" y2="828" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="722" x2="760" y2="722" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="508" y="710" width="24" height="24" fill="#fff"/>
+<line x1="516" y1="710" x2="516" y2="734" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+<line x1="524" y1="710" x2="524" y2="734" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+<text x="520" y="704" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">104 = 100nF</text>
+<line x1="380" y1="782" x2="760" y2="782" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="498" y="774" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="520" y="768" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
+<text x="972" y="726" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT+</text>
+<text x="972" y="766" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT-</text>
+<line x1="980" y1="722" x2="1040" y2="722" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="980" y1="762" x2="1040" y2="762" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="1040" y="702" width="130" height="80" rx="8" fill="#fff8e8" stroke="#334" stroke-width="2"/>
+<text x="1105" y="730" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">bone</text>
+<text x="1105" y="746" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">transducer</text>
+<text x="1105" y="766" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">under table</text>
+<rect x="780" y="850" width="200" height="180" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="880.0" y="870" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">PAM8302 #2 (voice)</text>
+<line x1="760" y1="892" x2="780" y2="892" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="896" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VIN</text>
+<line x1="734" y1="892" x2="760" y2="892" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="892" x2="734" y2="883" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="883" x2="744" y2="883" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<text x="734" y="878" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V</text>
+<line x1="760" y1="922" x2="780" y2="922" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="926" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN+</text>
+<line x1="760" y1="952" x2="780" y2="952" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="956" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN-</text>
+<line x1="734" y1="952" x2="760" y2="952" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="952" x2="734" y2="958" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="958" x2="744" y2="958" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="963" x2="740" y2="963" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="968" x2="736" y2="968" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="760" y1="982" x2="780" y2="982" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="986" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">SD</text>
+<line x1="760" y1="1012" x2="780" y2="1012" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="788" y="1016" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="734" y1="1012" x2="760" y2="1012" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="734" y1="1012" x2="734" y2="1018" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="724" y1="1018" x2="744" y2="1018" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="728" y1="1023" x2="740" y2="1023" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="732" y1="1028" x2="736" y2="1028" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="380" y1="922" x2="760" y2="922" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="508" y="910" width="24" height="24" fill="#fff"/>
+<line x1="516" y1="910" x2="516" y2="934" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+<line x1="524" y1="910" x2="524" y2="934" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+<text x="520" y="904" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">104 = 100nF</text>
+<line x1="380" y1="982" x2="760" y2="982" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="498" y="974" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="520" y="968" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
+<text x="972" y="926" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT+</text>
+<text x="972" y="966" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT-</text>
+<line x1="980" y1="922" x2="1040" y2="922" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="980" y1="962" x2="1040" y2="962" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<rect x="1040" y="902" width="130" height="80" rx="8" fill="#fff8e8" stroke="#334" stroke-width="2"/>
+<text x="1105" y="930" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">bone</text>
+<text x="1105" y="946" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">transducer</text>
+<text x="1105" y="966" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">in hollow book</text>
+<rect x="1010" y="80" width="170" height="330" rx="8" fill="#fffdf2" stroke="#aa8" stroke-width="1.5"/>
+<text x="1020" y="104" font-size="11" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Notes</text>
+<text x="1020" y="121" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: 1 x 2.2k on</text>
+<text x="1020" y="138" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  top, 2 x 2.2k in series</text>
+<text x="1020" y="155" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  below. Node goes to GPIO6.</text>
+<text x="1020" y="172" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- 104 ceramic = 100nF,</text>
+<text x="1020" y="189" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  in series with the signal.</text>
+<text x="1020" y="206" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Do NOT ground either</text>
+<text x="1020" y="223" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  transducer lead.</text>
+<text x="1020" y="240" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Module pot = volume,</text>
+<text x="1020" y="257" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  start fully down.</text>
+<text x="1020" y="274" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- If FC-51 needs 5V: VCC to</text>
+<text x="1020" y="291" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  +5V, 18k from OUT to GND,</text>
+<text x="1020" y="308" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  and check OUT reads</text>
+<text x="1020" y="325" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  2.6-3.4V before wiring</text>
+<text x="1020" y="342" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  it to GPIO8.</text>
+<text x="1020" y="359" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Optional: 100uF + 100nF</text>
+<text x="1020" y="376" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  from +5V to GND at each</text>
+<text x="1020" y="393" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  PAM's VIN.</text>
+</svg>
