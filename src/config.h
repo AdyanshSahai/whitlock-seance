@@ -1,7 +1,8 @@
 #pragma once
 #include <Arduino.h>
 
-// ============================ pins (S2 Mini GPIO) ============================
+// ======================= pins (ESP32-S2-DevKitM-1 GPIO) ======================
+// GPIO18 (DAC2) also drives the board's onboard RGB LED: remove that LED (see README).
 constexpr uint8_t PIN_DAC_MURMUR    = 17;  // DAC1 -> 100nF -> trimpot -> PAM8302 #1 (under table)
 constexpr uint8_t PIN_DAC_LINES     = 18;  // DAC2 -> 100nF -> trimpot -> PAM8302 #2 (hollow book)
 constexpr uint8_t PIN_AMP_SD_MURMUR = 11;  // PAM8302 #1 SD

@@ -235,7 +235,6 @@ static void tick(uint32_t now) {
 void setup() {
 #if DEBUG_LOG
   Serial.begin(115200);
-  Serial.setTxTimeoutMs(0);  // don't stall when no host is attached
 #endif
 #if USE_PERIPH_SWITCH
   pinMode(PIN_PERIPH_EN, OUTPUT);

@@ -1,6 +1,6 @@
 # Whitlock séance display
 
-One ESP32-S2 Mini (PlatformIO, Arduino). All tunables are in `src/config.h`.
+One ESP32-S2-DevKitM-1 (PlatformIO, Arduino). Pins are the GPIO numbers printed on its headers. All tunables are in `src/config.h`.
 
 ## Wiring
 
@@ -15,7 +15,12 @@ GPIO1  cell+ -> 100k -> pin -> 100k -> GND, 100nF pin to GND
 GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protected)
 ```
 
-- J5019 5V goes to the S2's 5V pin through a Schottky, so USB can't back-feed the boost.
+- **Remove the onboard RGB LED** (the little square marked RGB@IO18, next to the LDO). It is wired
+  to GPIO18, which is DAC2, so the audio would drive it and it would flicker and draw current. Snip it
+  off with side cutters or desolder it. Tape only hides it.
+- J5019 5V goes to the board's 5V pin through a Schottky so USB can't push into the boost. The board's
+  docs say USB and the 5V pin are mutually exclusive power sources, so **unplug USB (or switch the
+  battery off) when the other is connected**. For flashing, use USB only.
 - Put 100µF + 100nF at each PAM's VDD and across the strip.
 - A 1N400x in series with the strip's 5V feed makes the 3.3V data line reliable.
 - Power the FC-51 from 3V3 (or divide its output if on 5V).
