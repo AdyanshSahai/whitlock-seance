@@ -22,6 +22,10 @@ class Ultrasonic {
   void update(uint32_t now);
   bool present() const { return present_; }
   float distanceCm() const { return median_; }
+  // diagnostics: echoes seen, timeouts, last echo pulse width in microseconds
+  uint32_t echoes() const { return echoes_; }
+  uint32_t timeouts() const { return timeouts_; }
+  uint32_t lastPulseUs() const { return lastPulse_; }
 
  private:
   void push(float cm);
@@ -31,6 +35,7 @@ class Ultrasonic {
   bool present_ = false;
   bool waiting_ = false;
   uint32_t lastPing_ = 0;
+  uint32_t echoes_ = 0, timeouts_ = 0, lastPulse_ = 0;
 };
 
 // FC-51: debounced, edge event on "something placed".

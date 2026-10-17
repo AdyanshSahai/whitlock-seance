@@ -56,10 +56,13 @@ void Ultrasonic::update(uint32_t now) {
     return;
   }
   if (g_done) {
-    float cm = (g_fall - g_rise) / 58.0f;
+    lastPulse_ = g_fall - g_rise;
+    float cm = lastPulse_ / 58.0f;
+    echoes_++;
     waiting_ = false;
     push((cm < 2.0f || cm > 400.0f) ? US_NO_ECHO_CM : cm);
   } else if (now - lastPing_ >= US_TIMEOUT_MS) {
+    timeouts_++;
     waiting_ = false;
     push(US_NO_ECHO_CM);
   }
