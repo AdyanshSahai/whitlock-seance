@@ -77,25 +77,6 @@ void IrSensor::update(uint32_t now) {
   if (d_.update(raw, now, IR_DEBOUNCE_MS) && d_.stable) rose_ = true;
 }
 
-// ----------------------------------------------------------------------- pad
-void HoldPad::begin() { pinMode(PIN_FINALE_PAD, INPUT_PULLUP); }
-
-void HoldPad::update(uint32_t now) {
-  bool raw = digitalRead(PIN_FINALE_PAD) == LOW;
-  if (d_.update(raw, now, 40)) {
-    if (d_.stable) pressedAt_ = now ? now : 1;
-    else { pressedAt_ = 0; fired_ = false; }
-  }
-}
-
-bool HoldPad::heldEvent(uint32_t now) {
-  if (d_.stable && !fired_ && pressedAt_ && now - pressedAt_ >= ARM_HOLD_MS) {
-    fired_ = true;
-    return true;
-  }
-  return false;
-}
-
 // ------------------------------------------------------------------- battery
 void Battery::begin() {
   analogSetPinAttenuation(PIN_BAT_SENSE, ADC_11db);

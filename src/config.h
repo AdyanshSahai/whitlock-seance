@@ -10,7 +10,6 @@ constexpr uint8_t PIN_LED_DATA      = 4;   // WS2812 data via 330R
 constexpr uint8_t PIN_US_TRIG       = 5;   // HC-SR04 trig
 constexpr uint8_t PIN_US_ECHO       = 6;   // HC-SR04 echo, through 1k/2k divider
 constexpr uint8_t PIN_IR            = 8;   // FC-51 OUT
-constexpr uint8_t PIN_FINALE_PAD    = 10;  // hidden contact to GND
 constexpr uint8_t PIN_BAT_SENSE     = 1;   // cell+ -> 100k -> pin -> 100k -> GND (+100nF at pin)
 constexpr uint8_t PIN_PERIPH_EN     = 13;  // HIGH = switched 5V rail on (only if USE_PERIPH_SWITCH)
 
@@ -86,14 +85,6 @@ constexpr uint8_t  RARE_MAX_PER_BOOT = T(3, 250);
 constexpr uint32_t RARE_SWELL_MS = T(10000, 4000), RARE_HOLD_MS = T(3000, 1500);
 constexpr uint32_t RARE_SILENCE_MS = T(8000, 3000);      // dead dark silence afterwards
 
-// finale: hold the hidden pad 3s -> armed 10 min -> next book held on the IR 1s starts it
-constexpr uint32_t ARM_HOLD_MS = T(3000, 2000);
-constexpr uint32_t ARM_WINDOW_MS = 10UL * 60 * 1000;
-constexpr uint32_t FINALE_DWELL_MS = 1000;
-// Finale look: eyes go red, ch1 switches to the chant loop, presence detection is ignored.
-// Stays like this until power-off (or the low-battery cutoff).
-constexpr uint8_t FINALE_R = 255, FINALE_G = 0, FINALE_B = 0;
-constexpr uint32_t FINALE_FADE_IN_MS = 3000;
 
 // ============================ battery ========================================
 constexpr float BAT_DIVIDER = 2.0f;             // 100k/100k

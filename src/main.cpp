@@ -1,4 +1,4 @@
-// Whitlock seance display. See README.md for wiring, tuning and the finale procedure.
+// Whitlock seance display. See README.md for wiring and tuning.
 #include <Arduino.h>
 #include <driver/gpio.h>
 #include <esp_sleep.h>
@@ -7,11 +7,10 @@
 #include "eyes.h"
 #include "sensors.h"
 
-enum class Mode : uint8_t { Idle, Rare, Finale };
+enum class Mode : uint8_t { Idle, Rare };
 
 static Ultrasonic us;
 static IrSensor ir;
-static HoldPad pad;
 static Battery bat;
 static Eyes eyes;
 
@@ -36,10 +35,6 @@ static uint32_t irCooldownUntil = 0;
 // rare event
 static uint32_t rareStart = 0, lastRare = 0, darkUntil = 0, rareIdleNeeded = 0;
 static uint8_t rareCount = 0;
-
-// finale
-static bool armed = false;
-static uint32_t armedUntil = 0, finaleCandidateAt = 0;
 
 static uint32_t lastTick = 0, lastLog = 0;
 
@@ -141,18 +136,6 @@ static void startRare(uint32_t now) {
   LOG("rare event\n");
 }
 
-static void startFinale(uint32_t now) {
-  mode = Mode::Finale;
-  armed = false;
-  audio::stop(audio::CH_LINES, 500);
-  eyes.cancelOverlays();
-  eyes.setColor(FINALE_R, FINALE_G, FINALE_B);
-  eyes.flashBoth(0.8f, FINALE_FADE_IN_MS, 86400000UL, 3000);  // holds until power-off
-  const Clip* c = N_CHANT ? pick(CLIPS_CHANT, N_CHANT, lastMurmur) : pick(CLIPS_MURMUR, N_MURMUR, lastMurmur);
-  if (c) audio::play(audio::CH_MURMUR, *c, true, FINALE_FADE_IN_MS);
-  LOG("FINALE\n");
-}
-
 // -------------------------------------------------------------- per-tick work
 
 static void updatePresence(uint32_t now) {
@@ -173,29 +156,11 @@ static void updatePresence(uint32_t now) {
   }
 }
 
-static void handlePad(uint32_t now) {
-  pad.update(now);
-  if (pad.heldEvent(now)) {
-    armed = !armed;
-    armedUntil = now + ARM_WINDOW_MS;
-    finaleCandidateAt = 0;
-    // faint pulse in one eye: right = armed, left = disarmed. Only visible up close.
-    eyes.flash(armed ? 1 : 0, 0.5f, 250, 100, 700);
-    LOG("finale %s\n", armed ? "armed" : "disarmed");
-  }
-  if (armed && (int32_t)(now - armedUntil) >= 0) armed = false;
-}
-
 static void handleIr(uint32_t now) {
   ir.update(now);
   if (ir.rose()) {
     lastActivity = now;
-    if (armed) finaleCandidateAt = now;
-    else if (now >= irCooldownUntil) onBook(now);
-  }
-  if (armed && finaleCandidateAt) {
-    if (!ir.present()) finaleCandidateAt = 0;
-    else if (now - finaleCandidateAt >= FINALE_DWELL_MS) startFinale(now);
+    if (now >= irCooldownUntil) onBook(now);
   }
 }
 
@@ -247,17 +212,8 @@ static void tick(uint32_t now) {
   bat.update(now);
   if (bat.low()) goDead("battery");
 
-  if (mode == Mode::Finale) {
-    // red eyes + chant until power-off; the face deliberately ignores people
-    eyes.update(now, false, EYE_APPROACH_FADE_MS);
-    audio::service(now);
-    return;
-  }
-
   updatePresence(now);
-  handlePad(now);
   handleIr(now);
-  if (mode == Mode::Finale) return;
   murmurScheduler(now);
   waitScheduler(now);
   rareCheck(now);
@@ -270,8 +226,8 @@ static void tick(uint32_t now) {
 #if DEBUG_LOG
   if (now - lastLog >= 2000) {
     lastLog = now;
-    LOG("d=%.0fcm present=%d ir=%d mode=%d armed=%d bat=%umV\n", us.distanceCm(), present,
-        ir.present(), (int)mode, armed, bat.mv());
+    LOG("d=%.0fcm present=%d ir=%d mode=%d bat=%umV\n", us.distanceCm(), present,
+        ir.present(), (int)mode, bat.mv());
   }
 #endif
 }
@@ -290,7 +246,6 @@ void setup() {
   eyes.begin();
   us.begin();
   ir.begin();
-  pad.begin();
   bat.begin();
 
   uint32_t now = millis();

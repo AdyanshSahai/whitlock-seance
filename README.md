@@ -11,7 +11,6 @@ GPIO11 / GPIO12   PAM #1 / #2 SD (config: USE_AMP_SD, AMP_ON_LEVEL)
 GPIO4  WS2812 data via 330R (+10k to GND so it can't float in deep sleep)
 GPIO5  HC-SR04 TRIG        GPIO6  ECHO via 1k (top) / 2k (bottom) divider
 GPIO8  FC-51 OUT (active-low)
-GPIO10 hidden finale contact to GND
 GPIO1  cell+ -> 100k -> pin -> 100k -> GND, 100nF pin to GND
 GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protected)
 ```
@@ -27,20 +26,11 @@ GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protec
 audio/murmur/*.wav   idle loops (tens of seconds)
 audio/notthat/*.wav  "not that one" + variants
 audio/wait/*.wav     "wait"
-audio/chant/*.wav    finale chant (loops)
 python3 tools/wav2c.py          # writes src/audio_data.cpp (8 kHz, 8-bit, mono)
 ```
 
 `src/audio_data.cpp` currently holds synthesised placeholders. Run the script with
 your real files, then rebuild. It stops if the total exceeds ~3.5 MB.
-
-## Finale (hidden)
-
-1. Hold the hidden contact for 3s. One faint pulse in the right eye means armed
-   for 10 minutes. Hold 3s again to disarm (left-eye pulse).
-2. Place the real book on the IR sensor and keep it there for 1s.
-3. Eyes go red, ch1 switches to the chant, and presence detection is ignored. It
-   stays that way until power-off.
 
 ## First checks on hardware
 

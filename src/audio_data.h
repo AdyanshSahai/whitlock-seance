@@ -13,5 +13,3 @@ extern const Clip CLIPS_NOTTHAT[];  // "not that one" and variants
 extern const uint8_t N_NOTTHAT;
 extern const Clip CLIPS_WAIT[];     // "wait"
 extern const uint8_t N_WAIT;
-extern const Clip CLIPS_CHANT[];    // finale chant, loopable
-extern const uint8_t N_CHANT;

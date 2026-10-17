@@ -46,19 +46,6 @@ class IrSensor {
   bool rose_ = false;
 };
 
-// Hidden finale contact: one event per press once held for ARM_HOLD_MS.
-class HoldPad {
- public:
-  void begin();
-  void update(uint32_t now);
-  bool heldEvent(uint32_t now);
-
- private:
-  Debounced d_;
-  uint32_t pressedAt_ = 0;
-  bool fired_ = false;
-};
-
 class Battery {
  public:
   void begin();
