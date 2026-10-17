@@ -1,0 +1,4 @@
+# Name,  Type, SubType, Offset,   Size
+# 4MB flash: one big app slot (code + audio arrays), no OTA, no filesystem.
+nvs,     data, nvs,     0x9000,   0x5000,
+app0,    app,  factory, 0x10000,  0x3F0000,
