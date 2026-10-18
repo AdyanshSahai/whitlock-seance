@@ -10,10 +10,10 @@ one DAC. See `docs/schematic.png` for the full drawing.
 ```
 J1 (3V3/5V side)   GPIO17 DAC1 -> 100nF -> PAM8302 IN+ (IN- to GND)
                    GPIO11 -> PAM8302 SD (direct)
-                   GPIO8  FC-51 OUT (active-low), FC-51 powered from 3V3
+                   GPIO4  WS2812 data via 2x110R (= 220R)
 J3 (RST side)      GPIO34 HC-SR04 TRIG
                    GPIO40 HC-SR04 ECHO via the 2.2k divider (1 on top, 2 in series below)
-                   GPIO35 WS2812 data via 2x110R (= 220R)
+                   GPIO35 FC-51 OUT (active-low); FC-51 powered from the 3V3 pin on J1
 GPIO18             onboard RGB LED data: unused, held low by the firmware
 ```
 
