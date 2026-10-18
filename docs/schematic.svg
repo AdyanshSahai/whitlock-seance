@@ -1,19 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 1210" width="1210" height="1210">
-<rect width="1210" height="1210" fill="#fff"/>
-<text x="30" y="32" font-size="21" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Whitlock seance display: schematic (USB or battery)</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 1340" width="1210" height="1340">
+<rect width="1210" height="1340" fill="#fff"/>
+<text x="30" y="32" font-size="21" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Whitlock seance display: schematic (USB-PD powered)</text>
 <text x="30" y="52" font-size="12" text-anchor="start" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">Red = supply, black = signal / GND. Remove the onboard RGB LED (GPIO18). Electrolytics: stripe / short leg to GND.</text>
 <line x1="1060" y1="100" x2="1060" y2="1135" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
 <line x1="1130" y1="100" x2="1130" y2="1135" stroke="#222" stroke-width="4" stroke-linecap="round"/>
-<text x="1060" y="1157" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V RAIL</text>
-<text x="1130" y="1157" font-size="12" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GND RAIL</text>
-<circle cx="1060" cy="88" r="6" fill="#fff" stroke="#222" stroke-width="2"/>
-<line x1="1060" y1="94" x2="1060" y2="100" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
-<text x="1060" y="70" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">+5V IN</text>
-<circle cx="1130" cy="88" r="6" fill="#fff" stroke="#222" stroke-width="2"/>
-<line x1="1130" y1="94" x2="1130" y2="100" stroke="#222" stroke-width="4" stroke-linecap="round"/>
-<text x="1130" y="70" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND IN</text>
-<text x="1095" y="1177" font-size="10" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">+5V IN / GND IN (top of rails) are open:</text>
-<text x="1095" y="1190" font-size="10" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J5019 5V out and GND go here later</text>
+<text x="1060" y="92" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V RAIL</text>
+<text x="1130" y="92" font-size="12" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GND RAIL</text>
+<rect x="790" y="1185" width="140" height="112" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="860.0" y="1205" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">USB-PD board</text>
+<text x="860.0" y="1225" font-size="12" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">CH224K</text>
+<text x="860.0" y="1241" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">all 3 switches OFF</text>
+<text x="860.0" y="1256" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">= 5V output</text>
+<text x="782" y="1215" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">USB-C in</text>
+<text x="782" y="1230" font-size="10" text-anchor="end" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">(PD charger / bank)</text>
+<line x1="784" y1="1221" x2="790" y2="1221" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="922" y="1269" font-size="12" text-anchor="end" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">5V</text>
+<text x="922" y="1283" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="930" y1="1265" x2="975" y2="1265" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<circle cx="977" cy="1265" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
+<line x1="979" y1="1265" x2="1003" y2="1251" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<circle cx="1005" cy="1265" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
+<line x1="1009" y1="1265" x2="1060" y2="1265" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="1060" y1="1265" x2="1060" y2="1135" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
+<text x="990" y="1237" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">master switch</text>
+<line x1="930" y1="1279" x2="1130" y2="1279" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="1130" y1="1279" x2="1130" y2="1135" stroke="#222" stroke-width="4" stroke-linecap="round"/>
 <rect x="150" y="70" width="300" height="1065" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
 <text x="300.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">ESP32-S2-DevKitM-1</text>
 <text x="158" y="134" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">5V</text>
@@ -49,39 +60,40 @@
 <text x="442" y="1036" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO12</text>
 <text x="442" y="1049" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (top row)</text>
 <text x="162" y="250" font-size="11" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Notes</text>
-<text x="162" y="267" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Pins here are drawn on one edge for</text>
-<text x="162" y="284" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  tidiness. On the board, GPIO18 is on</text>
-<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the OTHER header (J3, bottom row,</text>
-<text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  USB end). All the rest are on J1.</text>
+<text x="162" y="267" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Pins are drawn on one edge for</text>
+<text x="162" y="284" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  tidiness. GPIO18 is on the OTHER</text>
+<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  header (J3, bottom row, USB end).</text>
+<text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  All the rest are on J1.</text>
 <text x="162" y="335" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- ESP 5V and GND pins are the same</text>
 <text x="162" y="352" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  nets as the +5V and GND rails.</text>
-<text x="162" y="369" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  USB bench: the board's 5V pin</text>
-<text x="162" y="386" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  feeds the rail. Battery: J5019</text>
-<text x="162" y="403" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  5V/GND go to the open inputs.</text>
-<text x="162" y="420" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- NEVER have USB plugged in while</text>
-<text x="162" y="437" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the battery feeds the rail (no</text>
-<text x="162" y="454" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Schottky yet).</text>
-<text x="162" y="471" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: one 2.2k on top,</text>
-<text x="162" y="488" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  two 2.2k in series below.</text>
-<text x="162" y="505" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO6.</text>
-<text x="162" y="522" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Nothing filters ECHO or TRIG.</text>
-<text x="162" y="539" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Noise is handled in firmware</text>
-<text x="162" y="556" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (median of 5 pings).</text>
-<text x="162" y="573" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- 104 ceramic = 100nF, in series</text>
-<text x="162" y="590" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  with the audio signal.</text>
-<text x="162" y="607" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Do NOT ground either</text>
-<text x="162" y="624" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  transducer lead.</text>
-<text x="162" y="641" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- PAM module pot = volume,</text>
-<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  start fully down.</text>
-<text x="162" y="675" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- If FC-51 needs 5V: VCC to the</text>
-<text x="162" y="692" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  +5V rail, 18k from OUT to GND,</text>
-<text x="162" y="709" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  check OUT reads 2.6-3.4V</text>
-<text x="162" y="726" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  before wiring it to GPIO8.</text>
-<text x="162" y="743" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- No diode on the strip 5V: fine</text>
-<text x="162" y="760" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  on the bench; add one later if</text>
-<text x="162" y="777" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the eyes misbehave.</text>
-<text x="162" y="794" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Put each cap right at that</text>
-<text x="162" y="811" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  part's power pins.</text>
+<text x="162" y="369" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  The USB-PD board feeds the rails.</text>
+<text x="162" y="386" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- To flash: master switch OFF, then</text>
+<text x="162" y="403" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  USB from the computer into the ESP</text>
+<text x="162" y="420" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  only. Never have both on at once.</text>
+<text x="162" y="437" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- USB-PD board: all three CH224K</text>
+<text x="162" y="454" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  switches OFF = 5V (CFG 000). Do not</text>
+<text x="162" y="471" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  use any other combination.</text>
+<text x="162" y="488" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: one 2.2k on top,</text>
+<text x="162" y="505" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  two 2.2k in series below.</text>
+<text x="162" y="522" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO6.</text>
+<text x="162" y="539" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Nothing filters ECHO or TRIG.</text>
+<text x="162" y="556" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Noise is handled in firmware</text>
+<text x="162" y="573" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (median of 5 pings).</text>
+<text x="162" y="590" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- 104 ceramic = 100nF, in series</text>
+<text x="162" y="607" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  with the audio signal.</text>
+<text x="162" y="624" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Do NOT ground either</text>
+<text x="162" y="641" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  transducer lead.</text>
+<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- PAM module pot = volume,</text>
+<text x="162" y="675" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  start fully down.</text>
+<text x="162" y="692" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- If FC-51 needs 5V: VCC to the</text>
+<text x="162" y="709" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  +5V rail, 18k from OUT to GND,</text>
+<text x="162" y="726" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  check OUT reads 2.6-3.4V</text>
+<text x="162" y="743" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  before wiring it to GPIO8.</text>
+<text x="162" y="760" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- No diode on the strip 5V: fine</text>
+<text x="162" y="777" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  for now; add one if the eyes</text>
+<text x="162" y="794" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  misbehave.</text>
+<text x="162" y="811" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Put each cap right at that</text>
+<text x="162" y="828" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  part's power pins.</text>
 <rect x="700" y="70" width="180" height="150" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
 <text x="790.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">WS2812 strip (eyes)</text>
 <line x1="880" y1="112" x2="888" y2="112" stroke="#222" stroke-width="2" stroke-linecap="round"/>
