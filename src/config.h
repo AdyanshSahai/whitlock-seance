@@ -3,7 +3,7 @@
 
 // ======================= pins (ESP32-S2-DevKitM-1 GPIO) ======================
 // Header J1 (3V3/5V side): GPIO4 LED strip data, GPIO11 amp SD, GPIO17 DAC (speaker).
-// Header J3 (RST side):   GPIO39 trig, GPIO40 echo, GPIO35 IR  (the two sensors together).
+// Header J3 (RST side):   GPIO39 trig, GPIO40 echo, GPIO36 IR  (the two sensors together).
 // GPIO18 drives the board's onboard RGB LED and is not used for audio any more.
 constexpr uint8_t PIN_DAC           = 17;  // DAC1 -> 100nF -> PAM8302 IN+ (one speaker, inside the mask)
 constexpr uint8_t PIN_AMP_SD        = 11;  // PAM8302 SD
@@ -11,7 +11,7 @@ constexpr uint8_t PIN_LED_DATA      = 4;   // WS2812 data via 220R (J1, 3V3/5V s
 constexpr uint8_t PIN_UNUSED_RGB    = 18;  // onboard RGB LED data (DAC2): held low, not used
 constexpr uint8_t PIN_US_TRIG       = 39;  // HC-SR04 trig (J3, RST side; MTCK/JTAG pin, plain GPIO here)
 constexpr uint8_t PIN_US_ECHO       = 40;  // HC-SR04 echo (J3, RST side; MTDO/JTAG pin, plain GPIO here), through the divider
-constexpr uint8_t PIN_IR            = 35;  // FC-51 OUT (J3, RST side, with the ultrasonic)
+constexpr uint8_t PIN_IR            = 36;  // FC-51 OUT (J3, RST side, with the ultrasonic)
 constexpr uint8_t PIN_BAT_SENSE     = 1;   // cell+ -> 100k -> pin -> 100k -> GND (+100nF at pin)
 constexpr uint8_t PIN_PERIPH_EN     = 13;  // HIGH = switched 5V rail on (only if USE_PERIPH_SWITCH)
 

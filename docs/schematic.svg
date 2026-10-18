@@ -49,7 +49,7 @@
 <text x="442" y="322" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="349" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO40</text>
 <text x="442" y="362" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
-<text x="442" y="554" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO35</text>
+<text x="442" y="554" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO36</text>
 <text x="442" y="567" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="726" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO17</text>
 <text x="442" y="739" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (3V3 / 5V side, top row)</text>
@@ -58,7 +58,7 @@
 <text x="162" y="250" font-size="11" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Notes</text>
 <text x="162" y="267" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Pins are drawn on one edge for</text>
 <text x="162" y="284" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  tidiness. Blue = J3 (RST side):</text>
-<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO35, 39, 40 (both sensors).</text>
+<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO36, 39, 40 (both sensors).</text>
 <text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  J1 (3V3/5V side): 4, 11, 17</text>
 <text x="162" y="335" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (strip and speaker amp).</text>
 <text x="162" y="352" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- The IR is powered from the 3V3</text>
