@@ -47,7 +47,7 @@
 <text x="442" y="157" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="309" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO34</text>
 <text x="442" y="322" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
-<text x="442" y="349" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO33</text>
+<text x="442" y="349" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO40</text>
 <text x="442" y="362" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="554" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO8</text>
 <text x="442" y="567" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (3V3 / 5V side, top row)</text>
@@ -58,7 +58,7 @@
 <text x="162" y="250" font-size="11" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Notes</text>
 <text x="162" y="267" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Pins are drawn on one edge for</text>
 <text x="162" y="284" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  tidiness. Blue = J3 (RST side):</text>
-<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO33, 34, 35. The rest are on</text>
+<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO34, 35, 40. The rest are on</text>
 <text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  J1 (3V3/5V side): 8, 11, 17.</text>
 <text x="162" y="335" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Ultrasonic is on the RST side.</text>
 <text x="162" y="352" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  IR is on the 3V3 side.</text>
@@ -79,7 +79,7 @@
 <text x="162" y="607" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Use no other combination.</text>
 <text x="162" y="624" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: one 2.2k on top,</text>
 <text x="162" y="641" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  two 2.2k in series below.</text>
-<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO33.</text>
+<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO40.</text>
 <text x="162" y="675" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Nothing filters ECHO or TRIG.</text>
 <text x="162" y="692" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Noise is handled in firmware</text>
 <text x="162" y="709" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (median of 5 pings).</text>
