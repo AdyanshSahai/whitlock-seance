@@ -5,11 +5,12 @@ One ESP32-S2-DevKitM-1 (PlatformIO, Arduino). Pins are the GPIO numbers printed 
 ## Wiring
 
 ```
+(J1 = 3V3/5V side: 4, 8, 11, 17.   J3 = RST side: 18, 21, 33, 34)
 GPIO17 DAC1 -> 100nF -> 10k trimpot -> PAM8302 #1 IN+  (IN- to GND)   murmur, under table
 GPIO18 DAC2 -> 100nF -> 10k trimpot -> PAM8302 #2 IN+  (IN- to GND)   Whitlock's lines, hollow book
-GPIO11 / GPIO12   PAM #1 / #2 SD (config: USE_AMP_SD, AMP_ON_LEVEL)
+GPIO11 / GPIO21   PAM #1 / #2 SD (config: USE_AMP_SD, AMP_ON_LEVEL)
 GPIO4  WS2812 data via 330R (+10k to GND so it can't float in deep sleep)
-GPIO5  HC-SR04 TRIG        GPIO6  ECHO via 1k (top) / 2k (bottom) divider
+GPIO34 HC-SR04 TRIG        GPIO33 ECHO via the 2.2k divider (J3, RST side)
 GPIO8  FC-51 OUT (active-low)
 GPIO1  cell+ -> 100k -> pin -> 100k -> GND, 100nF pin to GND
 GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protected)

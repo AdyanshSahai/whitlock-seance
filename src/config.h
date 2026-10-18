@@ -2,14 +2,16 @@
 #include <Arduino.h>
 
 // ======================= pins (ESP32-S2-DevKitM-1 GPIO) ======================
+// Header J1 (3V3/5V side): GPIO4 LED, GPIO8 IR, GPIO11 amp1 SD, GPIO17 DAC1.
+// Header J3 (RST side):   GPIO18 DAC2, GPIO21 amp2 SD, GPIO33 echo, GPIO34 trig.
 // GPIO18 (DAC2) also drives the board's onboard RGB LED: remove that LED (see README).
 constexpr uint8_t PIN_DAC_MURMUR    = 17;  // DAC1 -> 100nF -> trimpot -> PAM8302 #1 (under table)
 constexpr uint8_t PIN_DAC_LINES     = 18;  // DAC2 -> 100nF -> trimpot -> PAM8302 #2 (hollow book)
 constexpr uint8_t PIN_AMP_SD_MURMUR = 11;  // PAM8302 #1 SD
-constexpr uint8_t PIN_AMP_SD_LINES  = 12;  // PAM8302 #2 SD
+constexpr uint8_t PIN_AMP_SD_LINES  = 21;  // PAM8302 #2 SD  (J3, RST side)
 constexpr uint8_t PIN_LED_DATA      = 4;   // WS2812 data via 330R
-constexpr uint8_t PIN_US_TRIG       = 5;   // HC-SR04 trig
-constexpr uint8_t PIN_US_ECHO       = 6;   // HC-SR04 echo, through 1k/2k divider
+constexpr uint8_t PIN_US_TRIG       = 34;  // HC-SR04 trig (J3, RST side)
+constexpr uint8_t PIN_US_ECHO       = 33;  // HC-SR04 echo (J3, RST side), through the divider
 constexpr uint8_t PIN_IR            = 8;   // FC-51 OUT
 constexpr uint8_t PIN_BAT_SENSE     = 1;   // cell+ -> 100k -> pin -> 100k -> GND (+100nF at pin)
 constexpr uint8_t PIN_PERIPH_EN     = 13;  // HIGH = switched 5V rail on (only if USE_PERIPH_SWITCH)
