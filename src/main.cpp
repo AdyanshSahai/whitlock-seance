@@ -235,9 +235,10 @@ static void tick(uint32_t now) {
 #if DEBUG_LOG
   if (now - lastLog >= 2000) {
     lastLog = now;
-    LOG("d=%.0fcm echoes=%lu timeouts=%lu pulse=%luus present=%d ir=%d mode=%d bat=%umV\n",
+    LOG("d=%.0fcm echoes=%lu timeouts=%lu pulse=%luus present=%d ir=%d mode=%d | pins: echo=%d irpin=%d\n",
         us.distanceCm(), (unsigned long)us.echoes(), (unsigned long)us.timeouts(),
-        (unsigned long)us.lastPulseUs(), present, ir.present(), (int)mode, bat.mv());
+        (unsigned long)us.lastPulseUs(), present, ir.present(), (int)mode,
+        digitalRead(PIN_US_ECHO), digitalRead(PIN_IR));
   }
 #endif
 }
