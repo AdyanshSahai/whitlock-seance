@@ -1,31 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 1340" width="1210" height="1340">
-<rect width="1210" height="1340" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 1130" width="1210" height="1130">
+<rect width="1210" height="1130" fill="#fff"/>
 <text x="30" y="32" font-size="21" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Whitlock seance display: schematic (USB-PD powered)</text>
-<text x="30" y="52" font-size="12" text-anchor="start" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">Red = supply, black = signal / GND. Remove the onboard RGB LED (GPIO18). Electrolytics: stripe / short leg to GND.</text>
-<line x1="1060" y1="100" x2="1060" y2="1135" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
-<line x1="1130" y1="100" x2="1130" y2="1135" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<text x="30" y="52" font-size="12" text-anchor="start" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">Red = supply, black = signal / GND. The onboard RGB LED (GPIO18) is unused and held low by the firmware. Electrolytics: stripe / short leg to GND.</text>
+<line x1="1060" y1="100" x2="1060" y2="950" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
+<line x1="1130" y1="100" x2="1130" y2="950" stroke="#222" stroke-width="4" stroke-linecap="round"/>
 <text x="1060" y="92" font-size="12" text-anchor="middle" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+5V RAIL</text>
 <text x="1130" y="92" font-size="12" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GND RAIL</text>
-<rect x="790" y="1185" width="140" height="112" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
-<text x="860.0" y="1205" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">USB-PD board</text>
-<text x="860.0" y="1225" font-size="12" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">CH224K</text>
-<text x="860.0" y="1241" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">all 3 switches OFF</text>
-<text x="860.0" y="1256" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">= 5V output</text>
-<text x="782" y="1215" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">USB-C in</text>
-<text x="782" y="1230" font-size="10" text-anchor="end" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">(PD charger / bank)</text>
-<line x1="784" y1="1221" x2="790" y2="1221" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="922" y="1269" font-size="12" text-anchor="end" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">5V</text>
-<text x="922" y="1283" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
-<line x1="930" y1="1265" x2="975" y2="1265" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<circle cx="977" cy="1265" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
-<line x1="979" y1="1265" x2="1003" y2="1251" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<circle cx="1005" cy="1265" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
-<line x1="1009" y1="1265" x2="1060" y2="1265" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<line x1="1060" y1="1265" x2="1060" y2="1135" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
-<text x="990" y="1237" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">master switch</text>
-<line x1="930" y1="1279" x2="1130" y2="1279" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="1130" y1="1279" x2="1130" y2="1135" stroke="#222" stroke-width="4" stroke-linecap="round"/>
-<rect x="150" y="70" width="300" height="1065" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<rect x="790" y="990" width="140" height="112" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
+<text x="860.0" y="1010" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">USB-PD board</text>
+<text x="860.0" y="1030" font-size="12" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">CH224K</text>
+<text x="860.0" y="1046" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">all 3 switches OFF</text>
+<text x="860.0" y="1061" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">= 5V output</text>
+<text x="782" y="1020" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">USB-C in</text>
+<text x="782" y="1035" font-size="10" text-anchor="end" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">(PD charger / bank)</text>
+<line x1="784" y1="1026" x2="790" y2="1026" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<text x="922" y="1074" font-size="12" text-anchor="end" fill="#c00" font-weight="bold" font-family="Helvetica,Arial,sans-serif">5V</text>
+<text x="922" y="1088" font-size="12" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
+<line x1="930" y1="1070" x2="975" y2="1070" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<circle cx="977" cy="1070" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
+<line x1="979" y1="1070" x2="1003" y2="1056" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<circle cx="1005" cy="1070" r="4" fill="#fff" stroke="#c00" stroke-width="2"/>
+<line x1="1009" y1="1070" x2="1060" y2="1070" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
+<line x1="1060" y1="1070" x2="1060" y2="950" stroke="#c00" stroke-width="4" stroke-linecap="round"/>
+<text x="990" y="1042" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">master switch</text>
+<line x1="930" y1="1084" x2="1130" y2="1084" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+<line x1="1130" y1="1084" x2="1130" y2="950" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<rect x="150" y="70" width="300" height="900" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
 <text x="300.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">ESP32-S2-DevKitM-1</text>
 <text x="158" y="134" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">5V</text>
 <line x1="124" y1="130" x2="150" y2="130" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
@@ -43,8 +43,8 @@
 <line x1="114" y1="206" x2="134" y2="206" stroke="#222" stroke-width="2" stroke-linecap="round"/>
 <line x1="118" y1="211" x2="130" y2="211" stroke="#222" stroke-width="2" stroke-linecap="round"/>
 <line x1="122" y1="216" x2="126" y2="216" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="442" y="144" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO4</text>
-<text x="442" y="157" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (3V3 / 5V side, top row)</text>
+<text x="442" y="144" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO35</text>
+<text x="442" y="157" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="309" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO34</text>
 <text x="442" y="322" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="442" y="349" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO33</text>
@@ -55,48 +55,46 @@
 <text x="442" y="739" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (3V3 / 5V side, top row)</text>
 <text x="442" y="786" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GPIO11</text>
 <text x="442" y="799" font-size="9" text-anchor="end" fill="#777" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J1 (3V3 / 5V side, top row)</text>
-<text x="442" y="976" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO18</text>
-<text x="442" y="989" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
-<text x="442" y="1036" font-size="13" text-anchor="end" fill="#0a4fa0" font-weight="bold" font-family="Helvetica,Arial,sans-serif">GPIO21</text>
-<text x="442" y="1049" font-size="9" text-anchor="end" fill="#0a4fa0" font-weight="normal" font-family="Helvetica,Arial,sans-serif">J3 (RST side, bottom row)</text>
 <text x="162" y="250" font-size="11" text-anchor="start" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">Notes</text>
 <text x="162" y="267" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Pins are drawn on one edge for</text>
 <text x="162" y="284" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  tidiness. Blue = J3 (RST side):</text>
-<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO18, 21, 33, 34. The rest</text>
-<text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  are on J1 (3V3/5V side): 4, 8,</text>
-<text x="162" y="335" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  11, 17.</text>
-<text x="162" y="352" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Ultrasonic is on the RST side.</text>
-<text x="162" y="369" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  IR is on the 3V3 side.</text>
-<text x="162" y="386" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- ESP 5V and GND pins are the</text>
-<text x="162" y="403" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  same nets as the +5V and GND</text>
-<text x="162" y="420" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  rails. The USB-PD board feeds</text>
-<text x="162" y="437" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the rails.</text>
-<text x="162" y="454" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- To flash: master switch OFF,</text>
-<text x="162" y="471" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  then USB from the computer into</text>
-<text x="162" y="488" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the ESP only. Never both at once.</text>
-<text x="162" y="505" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- USB-PD board: all three CH224K</text>
-<text x="162" y="522" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  switches OFF = 5V (CFG 000).</text>
-<text x="162" y="539" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Use no other combination.</text>
-<text x="162" y="556" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: one 2.2k on top,</text>
-<text x="162" y="573" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  two 2.2k in series below.</text>
-<text x="162" y="590" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO33.</text>
-<text x="162" y="607" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Nothing filters ECHO or TRIG.</text>
-<text x="162" y="624" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Noise is handled in firmware</text>
-<text x="162" y="641" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (median of 5 pings).</text>
-<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- 104 ceramic = 100nF, in series</text>
-<text x="162" y="675" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  with the audio signal.</text>
-<text x="162" y="692" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Do NOT ground either</text>
-<text x="162" y="709" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  transducer lead.</text>
-<text x="162" y="726" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- PAM module pot = volume,</text>
-<text x="162" y="743" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  start fully down.</text>
-<text x="162" y="760" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- If FC-51 needs 5V: VCC to the</text>
-<text x="162" y="777" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  +5V rail, 18k from OUT to GND,</text>
-<text x="162" y="794" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  check OUT is 2.6-3.4V first.</text>
-<text x="162" y="811" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- No diode on the strip 5V: fine</text>
-<text x="162" y="828" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  for now; add one if the eyes</text>
-<text x="162" y="845" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  misbehave.</text>
-<text x="162" y="862" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Put each cap right at that</text>
-<text x="162" y="879" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  part's power pins.</text>
+<text x="162" y="301" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  GPIO33, 34, 35. The rest are on</text>
+<text x="162" y="318" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  J1 (3V3/5V side): 8, 11, 17.</text>
+<text x="162" y="335" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Ultrasonic is on the RST side.</text>
+<text x="162" y="352" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  IR is on the 3V3 side.</text>
+<text x="162" y="369" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- ONE speaker, inside the mask.</text>
+<text x="162" y="386" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  The murmur and Whitlock's lines</text>
+<text x="162" y="403" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  are mixed in firmware onto the</text>
+<text x="162" y="420" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  single DAC (GPIO17). Murmur</text>
+<text x="162" y="437" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  stops dead on approach.</text>
+<text x="162" y="454" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- ESP 5V and GND pins are the</text>
+<text x="162" y="471" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  same nets as the +5V and GND</text>
+<text x="162" y="488" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  rails. The USB-PD board feeds</text>
+<text x="162" y="505" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the rails.</text>
+<text x="162" y="522" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- To flash: master switch OFF,</text>
+<text x="162" y="539" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  then USB from the computer into</text>
+<text x="162" y="556" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  the ESP only. Never both.</text>
+<text x="162" y="573" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- USB-PD board: all 3 switches</text>
+<text x="162" y="590" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  OFF = 5V (CFG 000).</text>
+<text x="162" y="607" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Use no other combination.</text>
+<text x="162" y="624" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Echo divider: one 2.2k on top,</text>
+<text x="162" y="641" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  two 2.2k in series below.</text>
+<text x="162" y="658" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Node goes to GPIO33.</text>
+<text x="162" y="675" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Nothing filters ECHO or TRIG.</text>
+<text x="162" y="692" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  Noise is handled in firmware</text>
+<text x="162" y="709" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  (median of 5 pings).</text>
+<text x="162" y="726" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- 104 ceramic = 100nF, in series</text>
+<text x="162" y="743" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  with the audio signal.</text>
+<text x="162" y="760" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- Do NOT ground either</text>
+<text x="162" y="777" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  transducer lead.</text>
+<text x="162" y="794" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- PAM module pot = volume,</text>
+<text x="162" y="811" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  start fully down.</text>
+<text x="162" y="828" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- If FC-51 needs 5V: VCC to the</text>
+<text x="162" y="845" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  +5V rail, 18k from OUT to GND,</text>
+<text x="162" y="862" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  check OUT is 2.6-3.4V first.</text>
+<text x="162" y="879" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">- No diode on the strip 5V: fine</text>
+<text x="162" y="896" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  for now; add one if the eyes</text>
+<text x="162" y="913" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">  misbehave.</text>
 <rect x="700" y="70" width="180" height="150" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
 <text x="790.0" y="90" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">WS2812 strip (eyes)</text>
 <line x1="880" y1="112" x2="888" y2="112" stroke="#222" stroke-width="2" stroke-linecap="round"/>
@@ -169,7 +167,7 @@
 <circle cx="1130" cy="595" r="4.5" fill="#222"/>
 <line x1="450" y1="550" x2="680" y2="550" stroke="#222" stroke-width="2" stroke-linecap="round"/>
 <rect x="700" y="650" width="180" height="180" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
-<text x="790.0" y="670" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">PAM8302 #1 (murmur)</text>
+<text x="790.0" y="670" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">PAM8302 (speaker)</text>
 <line x1="880" y1="692" x2="888" y2="692" stroke="#222" stroke-width="2" stroke-linecap="round"/>
 <text x="872" y="696" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VIN</text>
 <line x1="880" y1="692" x2="1060" y2="692" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
@@ -204,7 +202,7 @@
 <rect x="910" y="706" width="120" height="76" rx="8" fill="#fff8e8" stroke="#334" stroke-width="2"/>
 <text x="970" y="732" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">bone</text>
 <text x="970" y="748" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">transducer</text>
-<text x="970" y="770" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">under table</text>
+<text x="970" y="770" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">inside the mask</text>
 <line x1="1060" y1="730" x2="1088" y2="730" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
 <line x1="1102" y1="730" x2="1130" y2="730" stroke="#222" stroke-width="2" stroke-linecap="round"/>
 <line x1="1088" y1="719" x2="1088" y2="741" stroke="#222" stroke-width="3" stroke-linecap="round"/>
@@ -220,56 +218,4 @@
 <circle cx="1060" cy="765" r="4.5" fill="#c00"/>
 <circle cx="1130" cy="765" r="4.5" fill="#222"/>
 <text x="1144" y="769" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">100nF</text>
-<rect x="700" y="900" width="180" height="180" rx="8" fill="#f4f6fa" stroke="#334" stroke-width="2"/>
-<text x="790.0" y="920" font-size="14" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">PAM8302 #2 (voice)</text>
-<line x1="880" y1="942" x2="888" y2="942" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="872" y="946" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">VIN</text>
-<line x1="880" y1="942" x2="1060" y2="942" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<circle cx="1060" cy="942" r="4.5" fill="#c00"/>
-<line x1="680" y1="972" x2="700" y2="972" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="708" y="976" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN+</text>
-<line x1="680" y1="1002" x2="700" y2="1002" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="708" y="1006" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">IN-</text>
-<line x1="654" y1="1002" x2="680" y2="1002" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="654" y1="1002" x2="654" y2="1008" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="644" y1="1008" x2="664" y2="1008" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="648" y1="1013" x2="660" y2="1013" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="652" y1="1018" x2="656" y2="1018" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="680" y1="1032" x2="700" y2="1032" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="708" y="1036" font-size="13" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">SD</text>
-<line x1="880" y1="1062" x2="888" y2="1062" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<text x="872" y="1066" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">GND</text>
-<line x1="880" y1="1062" x2="1130" y2="1062" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<circle cx="1130" cy="1062" r="4.5" fill="#222"/>
-<line x1="450" y1="972" x2="680" y2="972" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<rect x="528" y="960" width="24" height="24" fill="#fff"/>
-<line x1="536" y1="960" x2="536" y2="984" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<line x1="544" y1="960" x2="544" y2="984" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<text x="540" y="954" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">104 = 100nF</text>
-<line x1="450" y1="1032" x2="680" y2="1032" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<rect x="518" y="1024" width="44" height="16" fill="#fff" stroke="#222" stroke-width="2"/>
-<text x="540" y="1018" font-size="12" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">2.2k</text>
-<text x="872" y="978" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT+</text>
-<text x="872" y="1018" font-size="13" text-anchor="end" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">OUT-</text>
-<line x1="880" y1="974" x2="910" y2="974" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="880" y1="1014" x2="910" y2="1014" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<rect x="910" y="956" width="120" height="76" rx="8" fill="#fff8e8" stroke="#334" stroke-width="2"/>
-<text x="970" y="982" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">bone</text>
-<text x="970" y="998" font-size="13" text-anchor="middle" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">transducer</text>
-<text x="970" y="1020" font-size="11" text-anchor="middle" fill="#555" font-weight="normal" font-family="Helvetica,Arial,sans-serif">in hollow book</text>
-<line x1="1060" y1="980" x2="1088" y2="980" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<line x1="1102" y1="980" x2="1130" y2="980" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="1088" y1="969" x2="1088" y2="991" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<line x1="1102" y1="969" x2="1102" y2="991" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<circle cx="1060" cy="980" r="4.5" fill="#c00"/>
-<circle cx="1130" cy="980" r="4.5" fill="#222"/>
-<text x="1075" y="972" font-size="12" text-anchor="middle" fill="#222" font-weight="bold" font-family="Helvetica,Arial,sans-serif">+</text>
-<text x="1144" y="984" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">100uF</text>
-<line x1="1060" y1="1015" x2="1088" y2="1015" stroke="#c00" stroke-width="2" stroke-linecap="round"/>
-<line x1="1102" y1="1015" x2="1130" y2="1015" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-<line x1="1088" y1="1004" x2="1088" y2="1026" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<line x1="1102" y1="1004" x2="1102" y2="1026" stroke="#222" stroke-width="3" stroke-linecap="round"/>
-<circle cx="1060" cy="1015" r="4.5" fill="#c00"/>
-<circle cx="1130" cy="1015" r="4.5" fill="#222"/>
-<text x="1144" y="1019" font-size="11" text-anchor="start" fill="#222" font-weight="normal" font-family="Helvetica,Arial,sans-serif">100nF</text>
 </svg>

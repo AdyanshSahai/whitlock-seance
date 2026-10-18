@@ -4,27 +4,25 @@ One ESP32-S2-DevKitM-1 (PlatformIO, Arduino). Pins are the GPIO numbers printed 
 
 ## Wiring
 
+One speaker, inside the mask. Murmur and Whitlock's lines are mixed in firmware onto
+one DAC. See `docs/schematic.png` for the full drawing.
+
 ```
-(J1 = 3V3/5V side: 4, 8, 11, 17.   J3 = RST side: 18, 21, 33, 34)
-GPIO17 DAC1 -> 100nF -> 10k trimpot -> PAM8302 #1 IN+  (IN- to GND)   murmur, under table
-GPIO18 DAC2 -> 100nF -> 10k trimpot -> PAM8302 #2 IN+  (IN- to GND)   Whitlock's lines, hollow book
-GPIO11 / GPIO21   PAM #1 / #2 SD (config: USE_AMP_SD, AMP_ON_LEVEL)
-GPIO4  WS2812 data via 330R (+10k to GND so it can't float in deep sleep)
-GPIO34 HC-SR04 TRIG        GPIO33 ECHO via the 2.2k divider (J3, RST side)
-GPIO8  FC-51 OUT (active-low)
-GPIO1  cell+ -> 100k -> pin -> 100k -> GND, 100nF pin to GND
-GPIO13 reserved for a switched 5V rail (USE_PERIPH_SWITCH, off: cells are protected)
+J1 (3V3/5V side)   GPIO17 DAC1 -> 100nF -> PAM8302 IN+ (IN- to GND)
+                   GPIO11 -> 2.2k -> PAM8302 SD
+                   GPIO8  FC-51 OUT (active-low), FC-51 powered from 3V3
+J3 (RST side)      GPIO34 HC-SR04 TRIG
+                   GPIO33 HC-SR04 ECHO via the 2.2k divider (1 on top, 2 in series below)
+                   GPIO35 WS2812 data via 2x110R (= 220R)
+GPIO18             onboard RGB LED data: unused, held low by the firmware
 ```
 
-- **Remove the onboard RGB LED** (the little square marked RGB@IO18, next to the LDO). It is wired
-  to GPIO18, which is DAC2, so the audio would drive it and it would flicker and draw current. Snip it
-  off with side cutters or desolder it. Tape only hides it.
-- J5019 5V goes to the board's 5V pin through a Schottky so USB can't push into the boost. The board's
-  docs say USB and the 5V pin are mutually exclusive power sources, so **unplug USB (or switch the
-  battery off) when the other is connected**. For flashing, use USB only.
-- Put 100µF + 100nF at each PAM's VDD and across the strip.
-- A 1N400x in series with the strip's 5V feed makes the 3.3V data line reliable.
-- Power the FC-51 from 3V3 (or divide its output if on 5V).
+- Power: USB-PD board (CH224K, all 3 switches OFF = 5V) -> master switch -> +5V rail.
+  Flash with the master switch OFF and USB from the computer only; never both at once.
+- Caps: 470uF across the strip's 5V/GND; 100uF + 100nF across the PAM's VIN/GND.
+- PAM module pot is the volume; start fully down.
+- Do not ground either transducer lead.
+- Power the FC-51 from 3V3 (if it needs 5V, see the notes on the schematic).
 
 ## Audio
 
@@ -44,6 +42,6 @@ your real files, then rebuild. It stops if the total exceeds ~3.5 MB.
    `d=` distance. It should read 999 or well over 110cm. If the table or a wall
    reads under 80cm, re-aim the sensor.
 2. Walk up to it and check the thresholds (80cm present / 110cm gone).
-3. Check the IR with the real books and turn the trimpot down to about 8–10cm.
-4. Compare the `bat=` reading to a multimeter and adjust `BAT_CAL`.
+3. Check the IR with the real books and turn its trim pot down to about 8–10cm.
+4. Leave the battery cutoff off (there is no battery sense wired).
 5. Set the trimpot volumes, then set `DEBUG_LOG 0` for the install.

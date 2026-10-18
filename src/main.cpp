@@ -65,8 +65,7 @@ static void goDead(const char* why) {
   gpio_hold_en((gpio_num_t)PIN_PERIPH_EN);
 #endif
 #if USE_AMP_SD
-  gpio_hold_en((gpio_num_t)PIN_AMP_SD_MURMUR);
-  gpio_hold_en((gpio_num_t)PIN_AMP_SD_LINES);
+  gpio_hold_en((gpio_num_t)PIN_AMP_SD);
 #endif
   gpio_deep_sleep_hold_en();
   delay(50);
@@ -252,6 +251,9 @@ void setup() {
   digitalWrite(PIN_PERIPH_EN, HIGH);
   delay(150);
 #endif
+  // Keep the onboard RGB LED's data line quiet; nothing is wired to GPIO18 now.
+  pinMode(PIN_UNUSED_RGB, OUTPUT);
+  digitalWrite(PIN_UNUSED_RGB, LOW);
   audio::begin();
   eyes.begin();
   us.begin();

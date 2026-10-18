@@ -19,15 +19,17 @@ struct Channel {
   uint16_t gain = 256;
 };
 
+// Two logical channels (murmur, Whitlock's lines) mixed onto the single DAC / speaker.
 Channel g_ch[2];
-const uint8_t kDacPin[2] = {PIN_DAC_MURMUR, PIN_DAC_LINES};
-const uint8_t kSdPin[2] = {PIN_AMP_SD_MURMUR, PIN_AMP_SD_LINES};
-bool g_ampOn[2] = {false, false};
-uint32_t g_idleSince[2] = {0, 0};
+int32_t g_duck = 256;      // murmur level multiplier 0..256, drops while a line is playing
+uint8_t g_duckDiv = 0;
+bool g_ampOn = false;
+uint32_t g_idleSince = 0;
 portMUX_TYPE g_mux = portMUX_INITIALIZER_UNLOCKED;
 hw_timer_t* g_timer = nullptr;
 
-inline uint8_t IRAM_ATTR nextSample(Channel& c) {
+// Returns a signed sample (-128..127) for one channel and advances it.
+inline int32_t IRAM_ATTR nextSample(Channel& c) {
   if (c.env != c.target) {
     if (c.env < c.target) {
       c.env += c.step;
@@ -37,7 +39,7 @@ inline uint8_t IRAM_ATTR nextSample(Channel& c) {
       if (c.env < c.target) c.env = c.target;
     }
   }
-  if (!c.active) return 128;
+  if (!c.active) return 0;
   int32_t s = (int32_t)c.data[c.pos] - 128;
   if (++c.pos >= c.len) {
     if (c.loop) c.pos = 0;
@@ -46,23 +48,30 @@ inline uint8_t IRAM_ATTR nextSample(Channel& c) {
   int32_t v = (s * (c.env >> 8)) >> 8;
   v = (v * c.gain) >> 8;
   if (c.target == 0 && c.env == 0) c.active = false;
-  v += 128;
-  if (v < 0) v = 0;
-  if (v > 255) v = 255;
-  return (uint8_t)v;
+  return v;
 }
 
 void IRAM_ATTR onTick() {
-  dacWrite(kDacPin[0], nextSample(g_ch[0]));
-  dacWrite(kDacPin[1], nextSample(g_ch[1]));
+  // Slew the duck level slowly (about 0.5 s end to end) so it isn't audible as a step.
+  if ((++g_duckDiv & 15) == 0) {
+    int32_t want = g_ch[1].active ? DUCK_LEVEL : 256;
+    if (g_duck < want) g_duck++;
+    else if (g_duck > want) g_duck--;
+  }
+  int32_t m = (nextSample(g_ch[0]) * g_duck) >> 8;
+  int32_t l = nextSample(g_ch[1]);
+  int32_t v = 128 + m + l;
+  if (v < 0) v = 0;
+  if (v > 255) v = 255;
+  dacWrite(PIN_DAC, (uint8_t)v);
 }
 
-void setAmp(uint8_t ch, bool on) {
+void setAmp(bool on) {
 #if USE_AMP_SD
-  digitalWrite(kSdPin[ch], on ? AMP_ON_LEVEL : !AMP_ON_LEVEL);
+  digitalWrite(PIN_AMP_SD, on ? AMP_ON_LEVEL : !AMP_ON_LEVEL);
 #endif
-  g_ampOn[ch] = on;
-  g_idleSince[ch] = 0;
+  g_ampOn = on;
+  g_idleSince = 0;
 }
 
 int32_t stepFor(uint32_t ms) {
@@ -78,14 +87,11 @@ void begin() {
   g_ch[0].gain = GAIN_MURMUR;
   g_ch[1].gain = GAIN_LINES;
 #if USE_AMP_SD
-  for (uint8_t i = 0; i < 2; i++) {
-    pinMode(kSdPin[i], OUTPUT);
-    digitalWrite(kSdPin[i], !AMP_ON_LEVEL);
-  }
+  pinMode(PIN_AMP_SD, OUTPUT);
+  digitalWrite(PIN_AMP_SD, !AMP_ON_LEVEL);
 #endif
   // First dacWrite() allocates the DAC driver, so do it before the ISR runs.
-  dacWrite(kDacPin[0], 128);
-  dacWrite(kDacPin[1], 128);
+  dacWrite(PIN_DAC, 128);
 #if ESP_ARDUINO_VERSION_MAJOR >= 3
   g_timer = timerBegin(1000000);
   timerAttachInterrupt(g_timer, &onTick);
@@ -100,7 +106,7 @@ void begin() {
 
 void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset) {
   if (!clip.data || clip.len == 0) return;
-  setAmp(ch, true);
+  setAmp(true);
   Channel& c = g_ch[ch];
   portENTER_CRITICAL(&g_mux);
   c.data = clip.data;
@@ -127,13 +133,11 @@ void stop(Ch ch, uint32_t fadeOutMs) {
 bool active(Ch ch) { return g_ch[ch].active; }
 
 void service(uint32_t now) {
-  for (uint8_t i = 0; i < 2; i++) {
-    if (g_ch[i].active) {
-      g_idleSince[i] = 0;
-    } else if (g_ampOn[i]) {
-      if (g_idleSince[i] == 0) g_idleSince[i] = now ? now : 1;
-      else if (now - g_idleSince[i] > AMP_OFF_DELAY_MS) setAmp(i, false);
-    }
+  if (g_ch[0].active || g_ch[1].active) {
+    g_idleSince = 0;
+  } else if (g_ampOn) {
+    if (g_idleSince == 0) g_idleSince = now ? now : 1;
+    else if (now - g_idleSince > AMP_OFF_DELAY_MS) setAmp(false);
   }
 }
 
@@ -149,10 +153,9 @@ void shutdown() {
   }
   g_ch[0].active = false;
   g_ch[1].active = false;
-  dacWrite(kDacPin[0], 128);
-  dacWrite(kDacPin[1], 128);
+  dacWrite(PIN_DAC, 128);
 #if USE_AMP_SD
-  for (uint8_t i = 0; i < 2; i++) digitalWrite(kSdPin[i], !AMP_ON_LEVEL);
+  digitalWrite(PIN_AMP_SD, !AMP_ON_LEVEL);
 #endif
 }
 

@@ -2,14 +2,13 @@
 #include <Arduino.h>
 
 // ======================= pins (ESP32-S2-DevKitM-1 GPIO) ======================
-// Header J1 (3V3/5V side): GPIO4 LED, GPIO8 IR, GPIO11 amp1 SD, GPIO17 DAC1.
-// Header J3 (RST side):   GPIO18 DAC2, GPIO21 amp2 SD, GPIO33 echo, GPIO34 trig.
-// GPIO18 (DAC2) also drives the board's onboard RGB LED: remove that LED (see README).
-constexpr uint8_t PIN_DAC_MURMUR    = 17;  // DAC1 -> 100nF -> trimpot -> PAM8302 #1 (under table)
-constexpr uint8_t PIN_DAC_LINES     = 18;  // DAC2 -> 100nF -> trimpot -> PAM8302 #2 (hollow book)
-constexpr uint8_t PIN_AMP_SD_MURMUR = 11;  // PAM8302 #1 SD
-constexpr uint8_t PIN_AMP_SD_LINES  = 21;  // PAM8302 #2 SD  (J3, RST side)
-constexpr uint8_t PIN_LED_DATA      = 4;   // WS2812 data via 330R
+// Header J1 (3V3/5V side): GPIO8 IR, GPIO11 amp SD, GPIO17 DAC.
+// Header J3 (RST side):   GPIO33 echo, GPIO34 trig, GPIO35 LED data.
+// GPIO18 drives the board's onboard RGB LED and is not used for audio any more.
+constexpr uint8_t PIN_DAC           = 17;  // DAC1 -> 100nF -> PAM8302 IN+ (one speaker, inside the mask)
+constexpr uint8_t PIN_AMP_SD        = 11;  // PAM8302 SD
+constexpr uint8_t PIN_LED_DATA      = 35;  // WS2812 data via 220R (J3, RST side)
+constexpr uint8_t PIN_UNUSED_RGB    = 18;  // onboard RGB LED data (DAC2): held low, not used
 constexpr uint8_t PIN_US_TRIG       = 34;  // HC-SR04 trig (J3, RST side)
 constexpr uint8_t PIN_US_ECHO       = 33;  // HC-SR04 echo (J3, RST side), through the divider
 constexpr uint8_t PIN_IR            = 8;   // FC-51 OUT
@@ -36,6 +35,8 @@ constexpr uint32_t AUDIO_RATE_HZ = 8000;
 // Software gain, 0..256. Keep 256 and set loudness with the trimpots (full 8 bits).
 constexpr uint16_t GAIN_MURMUR = 256;
 constexpr uint16_t GAIN_LINES  = 256;
+// While Whitlock speaks, the murmur is turned down to this (0..256, 256 = no ducking).
+constexpr int32_t DUCK_LEVEL = 90;
 constexpr uint32_t AMP_OFF_DELAY_MS = 300;   // mute amp this long after a channel goes quiet
 
 // ============================ lights =========================================
