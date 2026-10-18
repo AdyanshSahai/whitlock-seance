@@ -9,7 +9,7 @@ one DAC. See `docs/schematic.png` for the full drawing.
 
 ```
 J1 (3V3/5V side)   GPIO17 DAC1 -> 100nF -> PAM8302 IN+ (IN- to GND)
-                   GPIO11 -> 2.2k -> PAM8302 SD
+                   GPIO11 -> PAM8302 SD (direct)
                    GPIO8  FC-51 OUT (active-low), FC-51 powered from 3V3
 J3 (RST side)      GPIO34 HC-SR04 TRIG
                    GPIO33 HC-SR04 ECHO via the 2.2k divider (1 on top, 2 in series below)
