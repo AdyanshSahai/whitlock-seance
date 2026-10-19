@@ -36,7 +36,8 @@ static uint32_t irCooldownUntil = 0;
 static uint32_t rareStart = 0, lastRare = 0, darkUntil = 0, rareIdleNeeded = 0;
 static uint8_t rareCount = 0;
 
-static uint32_t lastTick = 0, lastLog = 0;
+static uint32_t lastTick = 0, lastLog = 0, lastEyes = 0;
+static bool eyesBlocked = false;
 
 static uint32_t rnd(uint32_t lo, uint32_t hi) { return lo + (uint32_t)random(hi - lo + 1); }
 
@@ -248,8 +249,7 @@ static void tick(uint32_t now) {
   rareCheck(now);
   rareStep(now);
 
-  bool blocked = present || now < darkUntil;
-  eyes.update(now, blocked, EYE_APPROACH_FADE_MS);
+  eyesBlocked = present || now < darkUntil;
   audio::service(now);
 
 #if DEBUG_LOG
@@ -292,6 +292,10 @@ void loop() {
   uint32_t now = millis();
   us.update(now);
   audio::pump();
+  if (now - lastEyes >= EYE_UPDATE_MS) {  // eyes update at 200 Hz for smooth flicker and dithering
+    lastEyes = now;
+    eyes.update(now, eyesBlocked, EYE_APPROACH_FADE_MS);
+  }
   if (now - lastTick >= 20) {  // 50 Hz
     lastTick = now;
     tick(now);

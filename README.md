@@ -49,6 +49,20 @@ python3 tools/wav2c.py          # writes src/audio_data.cpp (8 kHz, 8-bit, mono)
 `src/audio_data.cpp` currently holds synthesised placeholder beeps. Run the script with
 your real files, then rebuild. It stops if the total exceeds ~3.5 MB.
 
+## Show days
+
+`FRIDAY_MODE` at the top of `src/config.h` picks the look:
+
+| `FRIDAY_MODE` | Days | Murmur | Eyes |
+|---|---|---|---|
+| 0 | Mon-Thu | 4 whisperers | amber candle (R:G:B = 255:90:15) |
+| 1 | Friday | 6 whisperers | redder candle (255:40:5) |
+
+Flash with `FRIDAY_MODE 1` on Friday morning. The eyes are a random candle flicker (different for
+each eye, with occasional deeper dips that never go below `CANDLE_FLOOR`), updated 200 times a
+second with our own temporal dithering so the dim levels have fine steps. `EYE_MAX_PWM` sets
+overall brightness; with a tissue/paper diffuser over the strip you can run it higher.
+
 ## First checks on hardware
 
 1. Set `DEBUG_LOG 1`, open the serial monitor with nobody near, and check the

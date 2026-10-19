@@ -1,21 +1,23 @@
 #include "eyes.h"
 #include <FastLED.h>
-#include "config.h"
 
 static CRGB g_leds[LED_COUNT];
 
+static inline float r01() { return random(10000) / 10000.0f; }
+
 void Eyes::begin() {
   FastLED.addLeds<WS2812, PIN_LED_DATA, GRB>(g_leds, LED_COUNT);
-  FastLED.setBrightness(EYE_MAX_BRIGHTNESS);
-  FastLED.setDither(1);
-  setColor(EYE_R, EYE_G, EYE_B);
+  FastLED.setBrightness(255);                 // no global dimming: we scale the values ourselves
+  FastLED.setCorrection(UncorrectedColor);
+  FastLED.setDither(0);                       // our own temporal dithering below
   off();
 }
 
 void Eyes::off() {
   fill_solid(g_leds, LED_COUNT, CRGB::Black);
   FastLED.show();
-  base_[0] = base_[1] = 0;
+  fade_[0] = fade_[1] = 0;
+  for (auto& a : acc_) a[0] = a[1] = a[2] = 0;
   cancelOverlays();
 }
 
@@ -54,13 +56,52 @@ void Eyes::step(Overlay& o, uint32_t dt, uint32_t now) {
   }
 }
 
+// One eye's candle: quick uneven wobble plus an occasional deeper dip, each eye on its own dice.
+float Eyes::candle(uint8_t e, uint32_t now, uint32_t dt) {
+  Candle& c = cd_[e];
+  if (now >= c.nextChange) {
+    c.target = CANDLE_LO + (CANDLE_HI - CANDLE_LO) * (0.15f + 0.85f * r01());
+    c.nextChange = now + 30 + random(110);               // new wobble every 30-140 ms
+  }
+  float k = dt / 38.0f;                                  // chase the target with ~40 ms lag
+  c.cur += (c.target - c.cur) * (k > 1 ? 1 : k);
+  if (now >= c.nextDip) {                                // a draught: short, fast-recovering dip
+    c.dipStart = now;
+    c.dipDur = 180 + random(280);
+    c.dipDepth = (0.14f + 0.22f * r01()) * (CANDLE_HI - CANDLE_FLOOR) * 2.0f;
+    c.nextDip = now + 2500 + random(5500);
+  }
+  float d = 0;
+  if (now - c.dipStart < c.dipDur) {
+    float u = (float)(now - c.dipStart) / c.dipDur;
+    d = c.dipDepth * (u < 0.25f ? u / 0.25f : (1.0f - u) / 0.75f);
+  }
+  float lvl = c.cur - d;
+  if (lvl < CANDLE_FLOOR) lvl = CANDLE_FLOOR;
+  return lvl;
+}
+
 void Eyes::paint(uint8_t eye, float level) {
   level = constrain(level, 0.0f, 1.0f);
-  uint8_t v = (uint8_t)(powf(level, EYE_GAMMA) * 255.0f + 0.5f);
-  CRGB c(r_, g_, b_);
-  c.nscale8(v);
+  float p = powf(level, EYE_GAMMA) * EYE_MAX_PWM;       // red channel, 0..255 (float)
+  float col[3] = {p, p * (EYE_G / 255.0f), p * (EYE_B / 255.0f)};
+  if (p > 0.01f) {                                      // keep the candle amber, not blood red
+    float floor = EYE_MIN_GREEN_PWM * (p * 0.25f > 1.0f ? 1.0f : p * 0.25f);
+    if (col[1] < floor) col[1] = floor;
+  }
   uint8_t first = eye ? EYE_RIGHT_FIRST : EYE_LEFT_FIRST;
-  for (uint8_t i = 0; i < EYE_LEDS_PER_EYE; i++) g_leds[first + i] = c;
+  for (uint8_t i = 0; i < EYE_LEDS_PER_EYE; i++) {
+    float* a = acc_[first + i];
+    uint8_t out[3];
+    for (uint8_t ch = 0; ch < 3; ch++) {                // error diffusion: average equals the float value
+      a[ch] += col[ch];
+      int o = (int)a[ch];
+      if (o > 255) o = 255;
+      a[ch] -= o;
+      out[ch] = (uint8_t)o;
+    }
+    g_leds[first + i] = CRGB(out[0], out[1], out[2]);
+  }
 }
 
 void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
@@ -68,22 +109,15 @@ void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
   last_ = now;
   if (dt > 100) dt = 100;
 
-  const float t = now / 1000.0f;
-  const float period[2] = {BREATH_PERIOD_L_S, BREATH_PERIOD_R_S};
-  const float phase[2] = {0.0f, BREATH_PHASE_R};
-  const float fallRate = BREATH_HI / (float)fallMs;
-  const float riseRate = BREATH_HI / (float)EYE_RISE_MS;
-
+  const float fallRate = 1.0f / (float)fallMs;
+  const float riseRate = 1.0f / (float)EYE_RISE_MS;
   for (uint8_t e = 0; e < 2; e++) {
-    float want = 0;
-    if (!blocked) {
-      float s = 0.5f + 0.5f * sinf(TWO_PI * t / period[e] + phase[e]);
-      want = BREATH_LO + (BREATH_HI - BREATH_LO) * s;
-    }
-    if (base_[e] < want) base_[e] = min(want, base_[e] + riseRate * dt);
-    else if (base_[e] > want) base_[e] = max(want, base_[e] - fallRate * dt);
+    float want = blocked ? 0.0f : 1.0f;
+    if (fade_[e] < want) fade_[e] = min(want, fade_[e] + riseRate * dt);
+    else if (fade_[e] > want) fade_[e] = max(want, fade_[e] - fallRate * dt);
     step(ov_[e], dt, now);
-    paint(e, max(base_[e], ov_[e].level));
+    float base = candle(e, now, dt) * fade_[e];
+    paint(e, max(base, ov_[e].level));
   }
   FastLED.show();
 }
