@@ -22,7 +22,7 @@ static uint32_t lastActivity = 0;
 // murmur scheduler
 static bool murmurOn = false;
 static uint32_t murmurNext = 0, murmurEnd = 0;
-static int8_t lastMurmur = -1, lastNotThat = -1, lastWait = -1;
+static int8_t lastNotThat = -1, lastWait = -1;
 
 // wait line
 static uint32_t waitPendingAt = 0, waitCooldownUntil = 0;
@@ -128,8 +128,8 @@ static void startRare(uint32_t now) {
   rareStart = now;
   lastRare = now;
   rareCount++;
-  const Clip* c = pick(CLIPS_MURMUR, N_MURMUR, lastMurmur);
-  if (c) audio::play(audio::CH_MURMUR, *c, true, RARE_SWELL_MS, random(c->len));
+  audio::setMurmurVoices(MURMUR_VOICES);
+  audio::playMurmur(RARE_SWELL_MS);
   eyes.flashBoth(1.0f, RARE_SWELL_MS, RARE_HOLD_MS, 1500);
   murmurOn = false;
   LOG("rare event\n");
@@ -174,9 +174,8 @@ static void handleIr(uint32_t now) {
 static void murmurScheduler(uint32_t now) {
   if (present || now < darkUntil) return;
   if (!murmurOn && now >= murmurNext) {
-    const Clip* c = pick(CLIPS_MURMUR, N_MURMUR, lastMurmur);
-    if (!c) return;
-    audio::play(audio::CH_MURMUR, *c, true, MURMUR_FADE_IN_MS, random(c->len));
+    audio::setMurmurVoices(MURMUR_VOICES);
+    audio::playMurmur(MURMUR_FADE_IN_MS);
     murmurOn = true;
     murmurEnd = now + rnd(MURMUR_ON_MIN_MS, MURMUR_ON_MAX_MS);
   } else if (murmurOn && now >= murmurEnd) {
@@ -206,7 +205,11 @@ static void rareCheck(uint32_t now) {
 }
 
 static void rareStep(uint32_t now) {
-  if (mode != Mode::Rare || now - rareStart < RARE_SWELL_MS + RARE_HOLD_MS) return;
+  if (mode != Mode::Rare) return;
+  uint32_t el = now - rareStart;
+  if (el > RARE_SWELL_MS) el = RARE_SWELL_MS;
+  audio::setMurmurVoices(MURMUR_VOICES + (el * RARE_EXTRA_VOICES) / RARE_SWELL_MS);  // the crowd gathers
+  if (now - rareStart < RARE_SWELL_MS + RARE_HOLD_MS) return;
   audio::stop(audio::CH_MURMUR, 40);  // then dead silence
   mode = Mode::Idle;
   darkUntil = now + 1500 + RARE_SILENCE_MS;
@@ -271,6 +274,7 @@ void setup() {
 void loop() {
   uint32_t now = millis();
   us.update(now);
+  audio::pump();
   if (now - lastTick >= 20) {  // 50 Hz
     lastTick = now;
     tick(now);

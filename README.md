@@ -26,14 +26,27 @@ GPIO18             onboard RGB LED data: unused, held low by the firmware
 
 ## Audio
 
+The **murmur is synthesised** on the chip (`src/murmur.cpp`): a crowd of whispering voices
+with wandering vowel-like filters, syllable rhythm, breaths and pauses. It never repeats and
+uses no flash. Tune it in `src/config.h` (`MURMUR_VOICES`, `RARE_EXTRA_VOICES`) and in the
+constants at the top of `murmur.cpp`. To hear it on a PC first:
+
 ```
-audio/murmur/*.wav   idle loops (tens of seconds)
+g++ -O2 -std=c++17 -Isrc tools/murmur_preview.cpp src/murmur.cpp -o /tmp/murmur_preview
+/tmp/murmur_preview docs/murmur_preview.wav 40 5      # file, seconds, voices
+```
+
+`docs/murmur_preview.wav` is a 40 s render with 5 voices.
+
+Whitlock's spoken lines are recorded clips:
+
+```
 audio/notthat/*.wav  "not that one" + variants
 audio/wait/*.wav     "wait"
 python3 tools/wav2c.py          # writes src/audio_data.cpp (8 kHz, 8-bit, mono)
 ```
 
-`src/audio_data.cpp` currently holds synthesised placeholders. Run the script with
+`src/audio_data.cpp` currently holds synthesised placeholder beeps. Run the script with
 your real files, then rebuild. It stops if the total exceeds ~3.5 MB.
 
 ## First checks on hardware

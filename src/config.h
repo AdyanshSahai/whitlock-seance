@@ -68,6 +68,8 @@ constexpr float    FLARE_PEAK = 0.9f;
 
 constexpr uint32_t MURMUR_ON_MIN_MS = T(20000, 6000),  MURMUR_ON_MAX_MS = T(60000, 10000);
 constexpr uint32_t MURMUR_OFF_MIN_MS = T(10000, 3000), MURMUR_OFF_MAX_MS = T(40000, 6000);
+constexpr uint8_t  MURMUR_VOICES = 5;          // whisperers in the idle murmur (1-8)
+constexpr uint8_t  RARE_EXTRA_VOICES = 3;       // extra voices that join during the rare swell
 constexpr uint32_t MURMUR_FADE_IN_MS = 800, MURMUR_FADE_OUT_MS = 1500;
 constexpr uint32_t MURMUR_CUT_MS = 25;          // "cuts dead" ramp, avoids a click
 

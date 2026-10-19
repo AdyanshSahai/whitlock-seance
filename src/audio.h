@@ -11,6 +11,10 @@ void begin();
 // startOffset is clamped to the clip length. Loops wrap seamlessly (wav2c crossfades the tail).
 void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset = 0);
 void stop(Ch ch, uint32_t fadeOutMs);
+// Procedural murmur (see murmur.h) on the murmur channel. Never repeats; stop() it like any clip.
+void playMurmur(uint32_t fadeInMs);
+void setMurmurVoices(uint8_t n);
+void pump();  // call every loop(): keeps the murmur sample buffer topped up
 bool active(Ch ch);
 void service(uint32_t now);  // call often: mutes idle amps
 void shutdown();             // stop ISR, DACs to midpoint, amps off

@@ -1,5 +1,6 @@
 #include "audio.h"
 #include "config.h"
+#include "murmur.h"
 
 namespace audio {
 
@@ -13,6 +14,7 @@ struct Channel {
   uint32_t pos = 0;
   bool loop = false;
   volatile bool active = false;
+  bool synth = false;  // true: samples come from the murmur ring buffer, not a clip
   int32_t env = 0;
   int32_t target = 0;
   int32_t step = ENV_ONE;
@@ -21,6 +23,12 @@ struct Channel {
 
 // Two logical channels (murmur, Whitlock's lines) mixed onto the single DAC / speaker.
 Channel g_ch[2];
+
+// Murmur synth renders ahead into a ring buffer (pump() fills it, the ISR drains it).
+constexpr uint16_t kRing = 2048;  // 256 ms
+int8_t g_ring[kRing];
+volatile uint16_t g_head = 0, g_tail = 0;
+Murmur g_murmur;
 int32_t g_duck = 256;      // murmur level multiplier 0..256, drops while a line is playing
 uint8_t g_duckDiv = 0;
 bool g_ampOn = false;
@@ -40,10 +48,21 @@ inline int32_t IRAM_ATTR nextSample(Channel& c) {
     }
   }
   if (!c.active) return 0;
-  int32_t s = (int32_t)c.data[c.pos] - 128;
-  if (++c.pos >= c.len) {
-    if (c.loop) c.pos = 0;
-    else c.active = false;
+  int32_t s;
+  if (c.synth) {
+    uint16_t t = g_tail;
+    if (t != g_head) {
+      s = g_ring[t & (kRing - 1)];
+      g_tail = t + 1;
+    } else {
+      s = 0;  // underrun: silence rather than a glitch
+    }
+  } else {
+    s = (int32_t)c.data[c.pos] - 128;
+    if (++c.pos >= c.len) {
+      if (c.loop) c.pos = 0;
+      else c.active = false;
+    }
   }
   int32_t v = (s * (c.env >> 8)) >> 8;
   v = (v * c.gain) >> 8;
@@ -86,6 +105,8 @@ int32_t stepFor(uint32_t ms) {
 void begin() {
   g_ch[0].gain = GAIN_MURMUR;
   g_ch[1].gain = GAIN_LINES;
+  g_murmur.begin((uint32_t)random(2147483647L) | 1u);
+  g_murmur.setVoices(MURMUR_VOICES);
 #if USE_AMP_SD
   pinMode(PIN_AMP_SD, OUTPUT);
   digitalWrite(PIN_AMP_SD, !AMP_ON_LEVEL);
@@ -113,6 +134,7 @@ void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startO
   c.len = clip.len;
   c.pos = startOffset < clip.len ? startOffset : 0;
   c.loop = loop;
+  c.synth = false;
   c.env = 0;
   c.target = ENV_ONE;
   c.step = stepFor(fadeInMs < 30 ? 30 : fadeInMs);  // 30 ms floor covers amp wake-up
@@ -128,6 +150,37 @@ void stop(Ch ch, uint32_t fadeOutMs) {
     c.step = stepFor(fadeOutMs);
   }
   portEXIT_CRITICAL(&g_mux);
+}
+
+void playMurmur(uint32_t fadeInMs) {
+  setAmp(true);
+  Channel& c = g_ch[CH_MURMUR];
+  portENTER_CRITICAL(&g_mux);
+  g_tail = 0;
+  g_head = 0;
+  c.synth = true;
+  c.data = nullptr;
+  c.len = 0;
+  c.pos = 0;
+  c.loop = false;
+  c.env = 0;
+  c.target = ENV_ONE;
+  c.step = stepFor(fadeInMs < 30 ? 30 : fadeInMs);
+  c.active = true;
+  portEXIT_CRITICAL(&g_mux);
+}
+
+void setMurmurVoices(uint8_t n) { g_murmur.setVoices(n); }
+
+void pump() {
+  Channel& c = g_ch[CH_MURMUR];
+  if (!(c.active && c.synth)) return;
+  uint16_t h = g_head;
+  while ((uint16_t)(h - g_tail) < kRing - 1) {
+    g_ring[h & (kRing - 1)] = g_murmur.next();
+    h = h + 1;
+  }
+  g_head = h;
 }
 
 bool active(Ch ch) { return g_ch[ch].active; }

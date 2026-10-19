@@ -2,7 +2,6 @@
 """Convert WAV files to 8 kHz unsigned 8-bit PCM C arrays for the flash-resident audio.
 
 Layout (folders under --in):
-    audio/murmur/*.wav    loops for the idle murmur (tail is crossfaded so they loop cleanly)
     audio/notthat/*.wav   "not that one" + variants
     audio/wait/*.wav      "wait"
 
@@ -25,7 +24,6 @@ from pathlib import Path
 RATE = 8000
 # folder, C suffix, crossfade-for-loop
 CATEGORIES = [
-    ("murmur", "MURMUR", True),
     ("notthat", "NOTTHAT", False),
     ("wait", "WAIT", False),
 ]
@@ -144,7 +142,6 @@ def synth_tone(seconds, f0, f1):
 
 def placeholders():
     return {
-        "murmur": [(f"placeholder_murmur_{i}", synth_murmur(24 + 8 * i, i)) for i in range(2)],
         "notthat": [(f"placeholder_notthat_{i}", synth_tone(0.9, 300 - 40 * i, 200 - 30 * i)) for i in range(3)],
         "wait": [("placeholder_wait", synth_tone(0.7, 180, 240))],
     }
