@@ -68,10 +68,11 @@ constexpr float    FLARE_PEAK = 0.9f;
 
 constexpr uint32_t MURMUR_ON_MIN_MS = T(20000, 6000),  MURMUR_ON_MAX_MS = T(60000, 10000);
 constexpr uint32_t MURMUR_OFF_MIN_MS = T(10000, 3000), MURMUR_OFF_MAX_MS = T(40000, 6000);
-constexpr uint8_t  MURMUR_VOICES = 5;          // whisperers in the idle murmur (1-8)
+constexpr uint8_t  MURMUR_VOICES = 6;          // whisperers in the idle murmur (1-8)
 constexpr uint8_t  RARE_EXTRA_VOICES = 3;       // extra voices that join during the rare swell
 constexpr uint32_t MURMUR_FADE_IN_MS = 800, MURMUR_FADE_OUT_MS = 1500;
-constexpr uint32_t MURMUR_CUT_MS = 25;          // "cuts dead" ramp, avoids a click
+constexpr uint32_t MURMUR_CUT_MS = 3;           // "cuts dead": 3 ms ramp, instant to the ear but not a click
+constexpr uint32_t MURMUR_HUSH_MS = 120;        // the voices fall silent when Whitlock speaks
 
 constexpr uint32_t STARTUP_MURMUR_MIN_MS = T(5000, 1000), STARTUP_MURMUR_MAX_MS = T(15000, 3000);
 constexpr uint32_t WAIT_DELAY_MS = 700;         // after leave confirmed

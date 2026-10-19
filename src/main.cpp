@@ -93,6 +93,16 @@ static void onApproach(uint32_t now) {
   LOG("approach\n");
 }
 
+// Someone has just come into range: the whispers stop dead at once. The eyes and the rest of the
+// reaction wait APPROACH_DELAY_MS (see onApproach), so a walk-by just pauses the murmur.
+static void onNear(uint32_t now) {
+  abortRare();
+  audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);
+  murmurOn = false;
+  murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
+  LOG("near\n");
+}
+
 static bool isBusy(uint32_t now) {
   uint8_t n = 0;
   for (uint8_t i = 0; i < BUSY_LEAVES; i++)
@@ -115,6 +125,9 @@ static void onLeave(uint32_t now, bool longEnough) {
 
 static void onBook(uint32_t now) {
   abortRare();
+  audio::stop(audio::CH_MURMUR, MURMUR_HUSH_MS);  // the voices stop speaking for Whitlock
+  murmurOn = false;
+  murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS) + 3000;
   irCooldownUntil = now + IR_COOLDOWN_MS;
   waitPendingAt = 0;
   eyes.flashBoth(1.0f, 0, BOOK_HOLD_MS, BOOK_DECAY_MS);
@@ -137,8 +150,12 @@ static void startRare(uint32_t now) {
 
 // -------------------------------------------------------------- per-tick work
 
+static bool nearPrev = false;
+
 static void updatePresence(uint32_t now) {
   bool raw = us.present();
+  if (!present && raw && !nearPrev) onNear(now);
+  nearPrev = raw;
   if (!present) {
     if (!raw) {
       rawSince = 0;
@@ -172,7 +189,7 @@ static void handleIr(uint32_t now) {
 }
 
 static void murmurScheduler(uint32_t now) {
-  if (present || now < darkUntil) return;
+  if (present || us.present() || now < darkUntil) return;
   if (!murmurOn && now >= murmurNext) {
     audio::setMurmurVoices(MURMUR_VOICES);
     audio::playMurmur(MURMUR_FADE_IN_MS);

@@ -17,6 +17,15 @@ int main(int argc, char** argv) {
   double sq = 0; int peak = 0;
   for (int i = 0; i < n; i++) { pcm[i] = m.next(); sq += pcm[i] * (double)pcm[i]; if (abs(pcm[i]) > peak) peak = abs(pcm[i]); }
   printf("voices=%d  rms=%.1f  peak=%d (of 127)\n", voices, sqrt(sq / n), peak);
+  int maxStep = 0; for (int i = 1; i < n; i++) { int d = abs(pcm[i] - pcm[i - 1]); if (d > maxStep) maxStep = d; }
+  // quiet gaps: runs where the 20 ms rolling level stays tiny
+  int runs = 0, runLen = 0, longest = 0, quiet = 0;
+  for (int i = 0; i + 160 <= n; i += 160) {
+    double e = 0; for (int k = 0; k < 160; k++) e += pcm[i + k] * (double)pcm[i + k];
+    if (sqrt(e / 160) < 1.5) { runLen++; quiet++; } else { if (runLen >= 10) { runs++; if (runLen > longest) longest = runLen; } runLen = 0; }
+  }
+  printf("biggest sample-to-sample step=%d   quiet gaps >0.2s: %d (longest %.1fs), %.0f%% of time quiet\n",
+         maxStep, runs, longest * 0.02, 100.0 * quiet / (n / 160));
   // crude band energy via a few DFT bins over 1 s windows
   double band[4] = {0, 0, 0, 0}; const double edges[5] = {50, 500, 1500, 3000, 4000};
   for (int w = 0; w + 1024 <= n; w += 8000) {

@@ -33,10 +33,10 @@ constants at the top of `murmur.cpp`. To hear it on a PC first:
 
 ```
 g++ -O2 -std=c++17 -Isrc tools/murmur_preview.cpp src/murmur.cpp -o /tmp/murmur_preview
-/tmp/murmur_preview docs/murmur_preview.wav 40 5      # file, seconds, voices
+/tmp/murmur_preview docs/murmur_preview.wav 40 6      # file, seconds, voices
 ```
 
-`docs/murmur_preview.wav` is a 40 s render with 5 voices.
+`docs/murmur_preview.wav` is a 40 s render with 6 voices.
 
 Whitlock's spoken lines are recorded clips:
 
