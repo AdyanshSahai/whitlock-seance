@@ -15,6 +15,7 @@ class Eyes {
   void flash(uint8_t eye, float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs);
   void flashBoth(float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs);
   void cancelOverlays();
+  void setAgitated(bool on) { agitated_ = on; }  // someone is near (Friday): eyes flare brighter
   void off();  // immediate black
 
  private:
@@ -33,6 +34,8 @@ class Eyes {
   void paint(uint8_t eye, float level);
 
   float fade_[2] = {0, 0};
+  float agit_ = 0;
+  bool agitated_ = false;
   Overlay ov_[2];
   Candle cd_[2];
   float acc_[8][3] = {};   // dithering residue per LED channel

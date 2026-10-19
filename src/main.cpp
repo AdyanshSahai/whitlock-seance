@@ -38,6 +38,7 @@ static uint8_t rareCount = 0;
 
 static uint32_t lastTick = 0, lastLog = 0, lastEyes = 0;
 static bool eyesBlocked = false;
+static float murmurGain = 256.0f;
 
 static uint32_t rnd(uint32_t lo, uint32_t hi) { return lo + (uint32_t)random(hi - lo + 1); }
 
@@ -86,17 +87,20 @@ static void onApproach(uint32_t now) {
   present = true;
   presentSince = now;
   goneSince = 0;
-  abortRare();
-  audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);  // dead, with a click-free ramp
-  murmurOn = false;
-  eyes.cancelOverlays();
   waitPendingAt = 0;
+  if (!FRIDAY_MODE) {
+    abortRare();
+    audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);  // dead, with a click-free ramp
+    murmurOn = false;
+    eyes.cancelOverlays();
+  }
   LOG("approach\n");
 }
 
 // Someone has just come into range: the whispers stop dead at once. The eyes and the rest of the
 // reaction wait APPROACH_DELAY_MS (see onApproach), so a walk-by just pauses the murmur.
 static void onNear(uint32_t now) {
+  if (FRIDAY_MODE) return;  // Friday: no hushing, the mask gets agitated instead (see tick)
   abortRare();
   audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);
   murmurOn = false;
@@ -114,8 +118,10 @@ static bool isBusy(uint32_t now) {
 static void onLeave(uint32_t now, bool longEnough) {
   present = false;
   lastActivity = now;
-  murmurOn = false;
-  murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
+  if (!FRIDAY_MODE) {
+    murmurOn = false;
+    murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
+  }
   LOG("leave (long=%d)\n", longEnough);
   if (!longEnough) return;
   eyes.flashBoth(FLARE_PEAK, 60, FLARE_HOLD_MS, FLARE_DECAY_MS);
@@ -189,14 +195,18 @@ static void handleIr(uint32_t now) {
   }
 }
 
+static bool agitatedNow() { return FRIDAY_MODE && (present || us.present()); }
+
 static void murmurScheduler(uint32_t now) {
-  if (present || us.present() || now < darkUntil) return;
-  if (!murmurOn && now >= murmurNext) {
-    audio::setMurmurVoices(MURMUR_VOICES);
+  if ((!FRIDAY_MODE && (present || us.present())) || now < darkUntil) return;
+  bool agit = agitatedNow();
+  if (agit && murmurOn) audio::setMurmurVoices(MURMUR_VOICES + FRIDAY_EXTRA_VOICES);
+  if (!murmurOn && (now >= murmurNext || agit)) {  // Friday: start at once if someone steps up in a gap
+    audio::setMurmurVoices(MURMUR_VOICES + (agit ? FRIDAY_EXTRA_VOICES : 0));
     audio::playMurmur(MURMUR_FADE_IN_MS);
     murmurOn = true;
     murmurEnd = now + rnd(MURMUR_ON_MIN_MS, MURMUR_ON_MAX_MS);
-  } else if (murmurOn && now >= murmurEnd) {
+  } else if (murmurOn && now >= murmurEnd && !agit) {
     audio::stop(audio::CH_MURMUR, MURMUR_FADE_OUT_MS);
     murmurOn = false;
     murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
@@ -249,7 +259,12 @@ static void tick(uint32_t now) {
   rareCheck(now);
   rareStep(now);
 
-  eyesBlocked = present || now < darkUntil;
+  eyesBlocked = (!FRIDAY_MODE && present) || now < darkUntil;
+  bool agit = agitatedNow();
+  eyes.setAgitated(agit);
+  float gainTarget = agit ? FRIDAY_MURMUR_GAIN : 256.0f;       // glide, so the swell isn't a step
+  murmurGain += (gainTarget - murmurGain) * 0.08f;
+  audio::setMurmurGain((uint16_t)murmurGain);
   audio::service(now);
 
 #if DEBUG_LOG

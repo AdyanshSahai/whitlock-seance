@@ -73,6 +73,13 @@ constexpr float US_NO_ECHO_CM = 999.0f;
 
 // ============================ behaviour timing ===============================
 constexpr uint32_t APPROACH_DELAY_MS = 2000;    // must stay in range this long before the mask reacts (0 = instant)
+// Friday: instead of going quiet when someone steps up, the mask gets agitated:
+// eyes flare brighter, the murmur gets louder and more voices join. (Used when FRIDAY_MODE is 1.)
+constexpr uint8_t  FRIDAY_EXTRA_VOICES = 2;     // extra whisperers while someone is near
+constexpr float    FRIDAY_MURMUR_GAIN = 420.0f; // murmur gain while someone is near (256 = normal)
+constexpr float    AGITATE_LEVEL = 0.85f;       // eye brightness while someone is near (0..1)
+constexpr uint32_t AGITATE_UP_MS = 450, AGITATE_DOWN_MS = 1600;
+
 constexpr uint32_t LEAVE_GONE_MS = 1500;        // gone this long = they left
 constexpr uint32_t LEAVE_MIN_PRESENT_MS = TV(3000, 1000); // must have been there this long for flare/wait
 constexpr uint32_t FLARE_HOLD_MS = 100, FLARE_DECAY_MS = 1500;

@@ -172,6 +172,8 @@ void playMurmur(uint32_t fadeInMs) {
 
 void setMurmurVoices(uint8_t n) { g_murmur.setVoices(n); }
 
+void setMurmurGain(uint16_t g256) { g_ch[CH_MURMUR].gain = g256; }
+
 void pump() {
   Channel& c = g_ch[CH_MURMUR];
   if (!(c.active && c.synth)) return;

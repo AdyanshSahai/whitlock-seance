@@ -14,6 +14,7 @@ void stop(Ch ch, uint32_t fadeOutMs);
 // Procedural murmur (see murmur.h) on the murmur channel. Never repeats; stop() it like any clip.
 void playMurmur(uint32_t fadeInMs);
 void setMurmurVoices(uint8_t n);
+void setMurmurGain(uint16_t g256);  // 256 = normal; raise to make the murmur louder
 void pump();  // call every loop(): keeps the murmur sample buffer topped up
 bool active(Ch ch);
 void service(uint32_t now);  // call often: mutes idle amps

@@ -109,6 +109,8 @@ void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
   last_ = now;
   if (dt > 100) dt = 100;
 
+  if (agitated_) agit_ = min(1.0f, agit_ + dt / (float)AGITATE_UP_MS);
+  else agit_ = max(0.0f, agit_ - dt / (float)AGITATE_DOWN_MS);
   const float fallRate = 1.0f / (float)fallMs;
   const float riseRate = 1.0f / (float)EYE_RISE_MS;
   for (uint8_t e = 0; e < 2; e++) {
@@ -116,7 +118,13 @@ void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
     if (fade_[e] < want) fade_[e] = min(want, fade_[e] + riseRate * dt);
     else if (fade_[e] > want) fade_[e] = max(want, fade_[e] - fallRate * dt);
     step(ov_[e], dt, now);
-    float base = candle(e, now, dt) * fade_[e];
+    float c = candle(e, now, dt);
+    float base = c * fade_[e];
+    if (agit_ > 0) {                      // agitated: bright, with a livelier flicker on top
+      float norm = (c - CANDLE_FLOOR) / (CANDLE_HI - CANDLE_FLOOR);
+      float hot = AGITATE_LEVEL + 0.12f * (norm - 0.5f);
+      base += (hot - base) * agit_;
+    }
     paint(e, max(base, ov_[e].level));
   }
   FastLED.show();
