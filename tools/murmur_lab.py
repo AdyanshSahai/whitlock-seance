@@ -117,7 +117,7 @@ def render_voice(rng, seconds, f0, tract, speed, whisper, pause_scale, long_paus
         a += 0.08 * (nz[i] - a)
         lowp[i] = a
     thud = lowp * thud_env * 0.35
-    return vow + hiss + thud
+    return vow + hiss + thud, env
 
 
 def lowpass(x, cutoff=2600.0, taps=129):
@@ -137,19 +137,40 @@ def reverb(x, rng, wet=0.22, rt=0.35):
     return (1 - wet) * x + wet * y
 
 
-def crowd(seconds, seed, voices, pause_scale=1.0, long_pause_chance=0.06):
+def crowd(seconds, seed, voices, pause_scale=1.0, long_pause_chance=0.06, report=False):
+    """Layer several speakers. To keep them audibly different people, each gets its own pitch,
+    vocal-tract size (not locked to pitch), speed, breathiness, brightness, chattiness and a slow
+    loudness swell, so the 'foreground' voice keeps changing while the others carry on under it."""
     rng = np.random.default_rng(seed)
-    f0s = np.linspace(100, 280, max(voices, 1))
-    rng.shuffle(f0s)
-    mix = np.zeros(int(seconds * FS))
+    n = int(seconds * FS)
+    if voices == 1:
+        f0s, whispers = np.array([175.0]), np.array([0.65])
+    else:
+        f0s = np.linspace(105, 290, voices)
+        whispers = np.linspace(0.35, 0.95, voices)         # from half-voiced to pure whisper
+        rng.shuffle(f0s)
+        rng.shuffle(whispers)
+    mix = np.zeros(n)
+    acts = []
+    tt = np.arange(n) / FS
     for i in range(voices):
-        f0 = float(f0s[i]) * rng.uniform(0.95, 1.05)
-        tract = 0.85 + 0.45 * (f0 - 95) / 190
-        v = render_voice(rng, seconds, f0, tract, rng.uniform(0.8, 1.3), rng.uniform(0.55, 0.95),
-                         pause_scale, long_pause_chance)
-        mix += v * rng.uniform(0.6, 1.0)
+        f0 = float(f0s[i]) * rng.uniform(0.97, 1.03)
+        tract = float(np.clip(0.80 + 0.55 * (f0 - 95) / 195 + rng.uniform(-0.10, 0.10), 0.78, 1.40))
+        speed = rng.uniform(0.7, 1.5)
+        chatty = rng.uniform(0.45, 1.3)                    # per-voice pause length
+        v, env = render_voice(rng, seconds, f0, tract, speed, float(whispers[i]),
+                              pause_scale * chatty, long_pause_chance)
+        v = lowpass(v, rng.uniform(1800, 3300), 97)        # some voices bright, some dull
+        period = rng.uniform(6.0, 15.0)
+        swell = 0.30 + 0.70 * (0.5 + 0.5 * np.sin(2 * math.pi * tt / period + rng.uniform(0, 6.28))) ** 1.4
+        mix += v * swell * rng.uniform(0.55, 1.0)
+        acts.append((env > 0.08) & (swell > 0.45))
     mix = lowpass(mix)
-    mix = reverb(mix, rng)
+    mix = reverb(mix, rng, wet=0.12, rt=0.25)
+    if report and acts:
+        count = np.sum(acts, axis=0)
+        print(f"   speakers audible at once: mean {count.mean():.1f}; solo {np.mean(count == 1) * 100:.0f}%, "
+              f"2+ overlapping {np.mean(count >= 2) * 100:.0f}%, silent {np.mean(count == 0) * 100:.0f}%")
     return mix / (np.max(np.abs(mix)) + 1e-9) * 0.8
 
 
@@ -178,12 +199,12 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         out, secs, seed, voices = sys.argv[1], float(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4])
         ps = float(sys.argv[5]) if len(sys.argv) > 5 else 1.0
-        x = crowd(secs, seed, voices, ps)
+        x = crowd(secs, seed, voices, ps, report=True)
         write_wav(out, x, np.random.default_rng(seed + 1)); stats(out, x)
     else:
         outdir = Path("docs/murmur_ideas"); outdir.mkdir(parents=True, exist_ok=True)
-        for name, secs, seed, voices, ps, lp in [("babble_6voices.wav", 40, 11, 6, 1.0, 0.06),
-                                                  ("sparse_3voices.wav", 40, 22, 3, 1.6, 0.25),
-                                                  ("one_voice.wav", 15, 33, 1, 1.0, 0.06)]:
-            x = crowd(secs, seed, voices, ps, lp)
+        for name, secs, seed, voices, ps, lp in [("v2_overlap_6voices.wav", 40, 11, 6, 0.55, 0.04),
+                                                  ("v2_overlap_4voices.wav", 40, 44, 4, 0.7, 0.05),
+                                                  ("v2_one_voice.wav", 15, 33, 1, 1.0, 0.06)]:
+            x = crowd(secs, seed, voices, ps, lp, report=True)
             write_wav(outdir / name, x, np.random.default_rng(seed + 1)); stats(name, x)
