@@ -97,14 +97,16 @@ static void onApproach(uint32_t now) {
   LOG("approach\n");
 }
 
-// Someone has just come into range: the whispers stop dead at once. The eyes and the rest of the
-// reaction wait APPROACH_DELAY_MS (see onApproach), so a walk-by just pauses the murmur.
+// Someone has just come into range: the whispers stop dead and the lights go out at once. The rest of
+// the reaction (leave flare, "wait") waits APPROACH_DELAY_MS (see onApproach), so a walk-by just
+// pauses the show.
 static void onNear(uint32_t now) {
   if (FRIDAY_MODE) return;  // Friday: no hushing, the mask gets agitated instead (see tick)
   abortRare();
   audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);
   murmurOn = false;
   murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
+  eyes.cancelOverlays();  // and the lights go out at the same instant (see eyesBlocked in tick)
   LOG("near\n");
 }
 
@@ -259,7 +261,7 @@ static void tick(uint32_t now) {
   rareCheck(now);
   rareStep(now);
 
-  eyesBlocked = (!FRIDAY_MODE && present) || now < darkUntil;
+  eyesBlocked = (!FRIDAY_MODE && (present || us.present())) || now < darkUntil;
   bool agit = agitatedNow();
   eyes.setAgitated(agit);
   float gainTarget = agit ? FRIDAY_MURMUR_GAIN : 256.0f;       // glide, so the swell isn't a step

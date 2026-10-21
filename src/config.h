@@ -60,7 +60,7 @@ constexpr float EYE_GAMMA = 1.8f;
 constexpr float CANDLE_LO = 0.42f, CANDLE_HI = 0.72f, CANDLE_FLOOR = 0.30f;
 constexpr uint32_t EYE_UPDATE_MS = 5;        // 200 Hz updates: smooth flicker and fast dithering
 constexpr uint32_t EYE_RISE_MS = 1800;                  // dark -> candle glow
-constexpr uint32_t EYE_APPROACH_FADE_MS = 2000;         // candle -> dark when someone steps up
+constexpr uint32_t EYE_APPROACH_FADE_MS = 1;            // candle -> dark when someone steps up: instant
 
 // ============================ ultrasonic (presence) ==========================
 // Aim it straight out from the table, away from the walkway.
