@@ -66,9 +66,9 @@ overall brightness; with a tissue/paper diffuser over the strip you can run it h
 ## First checks on hardware
 
 1. Set `DEBUG_LOG 1`, open the serial monitor with nobody near, and check the
-   `d=` distance. It should read 999 or well over 110cm. If the table or a wall
-   reads under 80cm, re-aim the sensor.
-2. Walk up to it and check the thresholds (80cm present / 110cm gone).
+   `d=` distance. It should read 999 or well over 15cm. If the table or a wall
+   reads under 10cm, re-aim the sensor.
+2. Walk up to it and check the thresholds (10cm present / 15cm gone).
 3. Check the IR with the real books and turn its trim pot down to about 8–10cm.
 4. Leave the battery cutoff off (there is no battery sense wired).
 5. Set the trimpot volumes, then set `DEBUG_LOG 0` for the install.

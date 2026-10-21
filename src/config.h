@@ -64,8 +64,8 @@ constexpr uint32_t EYE_APPROACH_FADE_MS = 2000;         // candle -> dark when s
 
 // ============================ ultrasonic (presence) ==========================
 // Aim it straight out from the table, away from the walkway.
-constexpr float US_ENTER_CM = 80.0f;     // present when median < this
-constexpr float US_EXIT_CM  = 110.0f;    // gone when median > this
+constexpr float US_ENTER_CM = 10.0f;     // present when median < this
+constexpr float US_EXIT_CM  = 15.0f;     // gone when median > this
 constexpr uint8_t  US_WINDOW = 5;        // median of last 5 pings
 constexpr uint32_t US_PING_INTERVAL_MS = 60;
 constexpr uint32_t US_TIMEOUT_MS = 35;
