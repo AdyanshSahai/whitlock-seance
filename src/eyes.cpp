@@ -10,6 +10,7 @@ void Eyes::begin() {
   FastLED.setBrightness(255);                 // no global dimming: we scale the values ourselves
   FastLED.setCorrection(UncorrectedColor);
   FastLED.setDither(0);                       // our own temporal dithering below
+  noticeGain_ = powf(NOTICE_BRIGHTNESS, 1.0f / EYE_GAMMA);   // x NOTICE_BRIGHTNESS in light, not in level
   off();
 }
 
@@ -26,8 +27,9 @@ void Eyes::cancelOverlays() {
   ov_[1] = Overlay();
 }
 
-void Eyes::flash(uint8_t eye, float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs) {
+void Eyes::flash(uint8_t eye, float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs, bool flicker) {
   Overlay& o = ov_[eye];
+  o.flicker = flicker;
   o.target = peak;
   if (o.level > peak) o.level = peak;
   o.attackRate = attackMs ? peak / attackMs : 0;
@@ -36,10 +38,15 @@ void Eyes::flash(uint8_t eye, float peak, uint32_t attackMs, uint32_t holdMs, ui
   o.holdStarted = false;
 }
 
-void Eyes::flashBoth(float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs) {
-  flash(0, peak, attackMs, holdMs, decayMs);
+void Eyes::flashBoth(float peak, uint32_t attackMs, uint32_t holdMs, uint32_t decayMs, bool flicker) {
+  flash(0, peak, attackMs, holdMs, decayMs, flicker);
   // right eye lags a touch so the two never move in lockstep
-  flash(1, peak, attackMs, holdMs + 120, decayMs + 250);
+  flash(1, peak, attackMs, holdMs + 120, decayMs + 250, flicker);
+}
+
+void Eyes::setTier(Tier t) {
+  noticedTarget_ = (t >= TIER_FAR) ? 1.0f : 0.0f;   // FAR, MID and NEAR all count as noticed
+  flickTarget_ = (t >= TIER_MID) ? 0.0f : 1.0f;     // MID and NEAR hold steady
 }
 
 void Eyes::step(Overlay& o, uint32_t dt, uint32_t now) {
@@ -111,6 +118,10 @@ void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
 
   if (agitated_) agit_ = min(1.0f, agit_ + dt / (float)AGITATE_UP_MS);
   else agit_ = max(0.0f, agit_ - dt / (float)AGITATE_DOWN_MS);
+  if (noticed_ < noticedTarget_) noticed_ = min(noticedTarget_, noticed_ + dt / (float)NOTICE_UP_MS);
+  else if (noticed_ > noticedTarget_) noticed_ = max(noticedTarget_, noticed_ - dt / (float)NOTICE_DOWN_MS);
+  if (flick_ < flickTarget_) flick_ = min(flickTarget_, flick_ + dt / (float)STEADY_MS);
+  else if (flick_ > flickTarget_) flick_ = max(flickTarget_, flick_ - dt / (float)STEADY_MS);
   const float fallRate = 1.0f / (float)fallMs;
   const float riseRate = 1.0f / (float)EYE_RISE_MS;
   for (uint8_t e = 0; e < 2; e++) {
@@ -119,13 +130,17 @@ void Eyes::update(uint32_t now, bool blocked, uint32_t fallMs) {
     else if (fade_[e] > want) fade_[e] = max(want, fade_[e] - fallRate * dt);
     step(ov_[e], dt, now);
     float c = candle(e, now, dt);
-    float base = c * fade_[e];
+    float shown = CANDLE_MID + (c - CANDLE_MID) * flick_;           // steady when listening
+    float boost = 1.0f + (noticeGain_ - 1.0f) * noticed_;           // brighter when noticed
+    float base = shown * boost * fade_[e];
     if (agit_ > 0) {                      // agitated: bright, with a livelier flicker on top
       float norm = (c - CANDLE_FLOOR) / (CANDLE_HI - CANDLE_FLOOR);
       float hot = AGITATE_LEVEL + 0.12f * (norm - 0.5f);
       base += (hot - base) * agit_;
     }
-    paint(e, max(base, ov_[e].level));
+    float ovl = ov_[e].level;
+    if (ov_[e].flicker) ovl *= c / CANDLE_MID;                      // busy-mode glint wobbles like a flame
+    paint(e, max(base, ovl));
   }
   FastLED.show();
 }

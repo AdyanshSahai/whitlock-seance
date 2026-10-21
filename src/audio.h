@@ -9,7 +9,8 @@ enum Ch : uint8_t { CH_MURMUR = 0, CH_LINES = 1 };
 
 void begin();
 // startOffset is clamped to the clip length. Loops wrap seamlessly (wav2c crossfades the tail).
-void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset = 0);
+// gain: 0 = the channel's normal level, otherwise 0..256 (256 = full).
+void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset = 0, uint16_t gain = 0);
 void stop(Ch ch, uint32_t fadeOutMs);
 // Procedural murmur (see murmur.h) on the murmur channel. Never repeats; stop() it like any clip.
 void playMurmur(uint32_t fadeInMs);

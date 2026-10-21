@@ -58,30 +58,46 @@ constexpr float EYE_MIN_GREEN_PWM = 1.5f;    // green never drops below this whi
 constexpr float EYE_GAMMA = 1.8f;
 // Candle flicker (perceived level 0..1). The deepest dip still stays above CANDLE_FLOOR.
 constexpr float CANDLE_LO = 0.42f, CANDLE_HI = 0.72f, CANDLE_FLOOR = 0.30f;
+constexpr float CANDLE_MID = 0.5f * (CANDLE_LO + CANDLE_HI);   // the level the eyes hold when steady
 constexpr uint32_t EYE_UPDATE_MS = 5;        // 200 Hz updates: smooth flicker and fast dithering
 constexpr uint32_t EYE_RISE_MS = 1800;                  // dark -> candle glow
-constexpr uint32_t EYE_APPROACH_FADE_MS = 1;            // candle -> dark when someone steps up: instant
+constexpr uint32_t EYE_NEAR_FADE_MS = 1;                // NEAR: eyes to dark. 1 = instant (as requested); 2000 = a slow fade
 
-// ============================ ultrasonic (presence) ==========================
-// Aim it straight out from the table, away from the walkway.
-constexpr float US_ENTER_CM = 10.0f;     // present when median < this
-constexpr float US_EXIT_CM  = 15.0f;     // gone when median > this
+// ============================ ultrasonic + distance tiers ====================
+// Aim the sensor straight out from the table, away from the walkway. Tiers use the median distance:
+//   IDLE  beyond FAR     nothing
+//   FAR   50-100 cm      "noticed":  eyes slowly brighten to NOTICE_BRIGHTNESS x idle, still flickering
+//   MID   20-50  cm      "listening": murmur ducks to LISTEN_MURMUR_LEVEL, eyes hold steady (no flicker)
+//   NEAR  < 20   cm      murmur cuts, eyes go dark
+constexpr float TIER_NEAR_CM = 20.0f, TIER_MID_CM = 50.0f, TIER_FAR_CM = 100.0f;  // enter (moving inward)
+constexpr float TIER_HYST_CM = 15.0f;        // moving outward needs this much more distance
+constexpr uint32_t TIER_DWELL_MS = 500;      // a candidate tier must hold this long before it is adopted
+constexpr uint32_t NEAR_DWELL_MS = 0;        // ...except entering NEAR: the murmur cut / lights out stay instant
 constexpr uint8_t  US_WINDOW = 5;        // median of last 5 pings
 constexpr uint32_t US_PING_INTERVAL_MS = 60;
 constexpr uint32_t US_TIMEOUT_MS = 35;
 constexpr float US_NO_ECHO_CM = 999.0f;
 
 // ============================ behaviour timing ===============================
-constexpr uint32_t APPROACH_DELAY_MS = 2000;    // must stay in range this long before the mask reacts (0 = instant)
+// Noticed / listening looks and sounds
+constexpr float    NOTICE_BRIGHTNESS = 1.5f;     // eyes at this multiple of idle brightness when someone is FAR/MID
+constexpr uint32_t NOTICE_UP_MS = 1500, NOTICE_DOWN_MS = 1500;   // brighten / relax (reverses smoothly)
+constexpr uint32_t STEADY_MS = 500;              // flicker fades out (MID) / back in over this
+constexpr float    LISTEN_MURMUR_LEVEL = 0.30f;  // murmur volume in MID (fraction of normal)
+constexpr float    GAIN_SMOOTH = 0.11f;          // per 20 ms tick: ~0.5 s to settle a murmur level change
+
 // Friday: instead of going quiet when someone steps up, the mask gets agitated:
 // eyes flare brighter, the murmur gets louder and more voices join. (Used when FRIDAY_MODE is 1.)
 constexpr uint8_t  FRIDAY_EXTRA_VOICES = 2;     // extra whisperers while someone is near
 constexpr float    FRIDAY_MURMUR_GAIN = 420.0f; // murmur gain while someone is near (256 = normal)
+constexpr uint8_t  FRIDAY_AGITATE_TIER = 1;     // agitated from this tier inward: 1 = FAR (within 100 cm), 2 = MID, 3 = NEAR
 constexpr float    AGITATE_LEVEL = 0.85f;       // eye brightness while someone is near (0..1)
 constexpr uint32_t AGITATE_UP_MS = 450, AGITATE_DOWN_MS = 1600;
 
-constexpr uint32_t LEAVE_GONE_MS = 1500;        // gone this long = they left
-constexpr uint32_t LEAVE_MIN_PRESENT_MS = TV(3000, 1000); // must have been there this long for flare/wait
+// A visit = time in MID/NEAR. It ends when the median is beyond LEAVE_CM for LEAVE_GONE_MS.
+constexpr float    LEAVE_CM = 200.0f;
+constexpr uint32_t LEAVE_GONE_MS = 1500;
+constexpr uint32_t LEAVE_MIN_ENGAGED_MS = TV(3000, 1000);  // needs this long in MID/NEAR to count as a leave
 constexpr uint32_t FLARE_HOLD_MS = 100, FLARE_DECAY_MS = 1500;
 constexpr float    FLARE_PEAK = 0.9f;
 
@@ -92,31 +108,29 @@ constexpr uint8_t  MURMUR_VOICES = 6;          // whisperers in the idle murmur 
 #else
 constexpr uint8_t  MURMUR_VOICES = 4;
 #endif
-constexpr uint8_t  RARE_EXTRA_VOICES = 3;       // extra voices that join during the rare swell
 constexpr uint32_t MURMUR_FADE_IN_MS = 800, MURMUR_FADE_OUT_MS = 1500;
 constexpr uint32_t MURMUR_CUT_MS = 3;           // "cuts dead": 3 ms ramp, instant to the ear but not a click
 constexpr uint32_t MURMUR_HUSH_MS = 120;        // the voices fall silent when Whitlock speaks
 
 constexpr uint32_t STARTUP_MURMUR_MIN_MS = TV(5000, 1000), STARTUP_MURMUR_MAX_MS = TV(15000, 3000);
-constexpr uint32_t WAIT_DELAY_MS = 700;         // after leave confirmed
-constexpr uint8_t  WAIT_ODDS = TV(3, 1);               // 1 in 3
-constexpr uint32_t WAIT_COOLDOWN_MS = TV(3UL * 60 * 1000, 6000);
-constexpr uint32_t WAIT_COOLDOWN_BUSY_MS = TV(5UL * 60 * 1000, 10000);
-constexpr uint8_t  BUSY_LEAVES = 4;             // this many leaves within BUSY_WINDOW_MS = busy
-constexpr uint32_t BUSY_WINDOW_MS = 10UL * 60 * 1000;
+// Reaction pool (audio/reaction): one random clip when someone leaves; the eye flare happens either way.
+constexpr uint32_t REACT_DELAY_MS = 700;                    // after the leave is confirmed
+constexpr uint32_t REACT_COOLDOWN_MS = TV(20000, 5000);     // shared by leave reactions and busy-mode sounds
+
+// Busy mode, so the display doesn't sit dead at lunch: someone in MID/NEAR for 2+ minutes, then every
+// 40-90 s either a slow eye flicker up to ~half idle brightness (when the eyes are dark, i.e. NEAR) or a
+// quiet reaction from the pool. Ends once nobody has been in MID/NEAR for 60 s.
+constexpr uint32_t BUSY_AFTER_MS = TV(120000, 15000);
+constexpr uint32_t BUSY_GAP_MS = 3000;                      // a step out shorter than this doesn't restart the 2 min
+constexpr uint32_t BUSY_EVERY_MIN_MS = TV(40000, 4000), BUSY_EVERY_MAX_MS = TV(90000, 8000);
+constexpr uint32_t BUSY_CLEAR_MS = TV(60000, 10000);
+constexpr uint16_t BUSY_SOUND_GAIN = 154;                   // 60% of 256
+constexpr float    BUSY_EYE_PEAK = 0.39f;                   // perceived level = half of idle brightness
+constexpr uint32_t BUSY_EYE_UP_MS = 1500, BUSY_EYE_DOWN_MS = 1500;
 
 constexpr uint32_t IR_DEBOUNCE_MS = 150;
 constexpr uint32_t IR_COOLDOWN_MS = TV(20000, 3000);
 constexpr uint32_t BOOK_HOLD_MS = 1200, BOOK_DECAY_MS = 1800;
-
-// rare event: nobody near for a long time
-constexpr uint32_t RARE_IDLE_MS = TV(20UL * 60 * 1000, 20000);
-constexpr uint32_t RARE_IDLE_JITTER_MS = TV(10UL * 60 * 1000, 5000);
-constexpr uint32_t RARE_MIN_SPACING_MS = TV(3UL * 60 * 60 * 1000, 30000);
-constexpr uint8_t  RARE_MAX_PER_BOOT = TV(3, 250);
-constexpr uint32_t RARE_SWELL_MS = TV(10000, 4000), RARE_HOLD_MS = TV(3000, 1500);
-constexpr uint32_t RARE_SILENCE_MS = TV(8000, 3000);      // dead dark silence afterwards
-
 
 // ============================ battery ========================================
 constexpr float BAT_DIVIDER = 2.0f;             // 100k/100k

@@ -38,8 +38,6 @@ void Ultrasonic::push(float cm) {
     s[j + 1] = v;
   }
   median_ = s[US_WINDOW / 2];
-  if (!present_ && median_ < US_ENTER_CM) present_ = true;
-  else if (present_ && median_ > US_EXIT_CM) present_ = false;
 }
 
 void Ultrasonic::update(uint32_t now) {

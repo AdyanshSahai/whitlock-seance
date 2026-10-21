@@ -125,7 +125,7 @@ void begin() {
 #endif
 }
 
-void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset) {
+void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startOffset, uint16_t gain) {
   if (!clip.data || clip.len == 0) return;
   setAmp(true);
   Channel& c = g_ch[ch];
@@ -135,6 +135,7 @@ void play(Ch ch, const Clip& clip, bool loop, uint32_t fadeInMs, uint32_t startO
   c.pos = startOffset < clip.len ? startOffset : 0;
   c.loop = loop;
   c.synth = false;
+  c.gain = gain ? gain : (ch == CH_LINES ? GAIN_LINES : GAIN_MURMUR);
   c.env = 0;
   c.target = ENV_ONE;
   c.step = stepFor(fadeInMs < 30 ? 30 : fadeInMs);  // 30 ms floor covers amp wake-up

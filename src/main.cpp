@@ -5,36 +5,27 @@
 #include "audio.h"
 #include "config.h"
 #include "eyes.h"
+#include "presence.h"
 #include "sensors.h"
-
-enum class Mode : uint8_t { Idle, Rare };
 
 static Ultrasonic us;
 static IrSensor ir;
 static Battery bat;
 static Eyes eyes;
-
-static Mode mode = Mode::Idle;
-static bool present = false;
-static uint32_t presentSince = 0, goneSince = 0, rawSince = 0;
-static uint32_t lastActivity = 0;
+static Presence presence(PresenceParams{TIER_NEAR_CM, TIER_MID_CM, TIER_FAR_CM, TIER_HYST_CM, LEAVE_CM,
+                                        TIER_DWELL_MS, NEAR_DWELL_MS, LEAVE_GONE_MS, LEAVE_MIN_ENGAGED_MS,
+                                        BUSY_AFTER_MS, BUSY_GAP_MS, BUSY_CLEAR_MS});
+static Tier tier = TIER_IDLE;
 
 // murmur scheduler
 static bool murmurOn = false;
 static uint32_t murmurNext = 0, murmurEnd = 0;
-static int8_t lastNotThat = -1, lastWait = -1;
 
-// wait line
-static uint32_t waitPendingAt = 0, waitCooldownUntil = 0;
-static uint32_t leaveLog[BUSY_LEAVES];
-static uint8_t leaveHead = 0;
-
-// book / IR
+// pools: book lines (CLIPS_NOTTHAT) and reactions (CLIPS_REACT)
+static int8_t lastNotThat = -1, lastReact = -1;
+static uint32_t reactPendingAt = 0, reactCooldownUntil = 0;
 static uint32_t irCooldownUntil = 0;
-
-// rare event
-static uint32_t rareStart = 0, lastRare = 0, darkUntil = 0, rareIdleNeeded = 0;
-static uint8_t rareCount = 0;
+static uint32_t busyNext = 0;
 
 static uint32_t lastTick = 0, lastLog = 0, lastEyes = 0;
 static bool eyesBlocked = false;
@@ -45,12 +36,10 @@ static uint32_t rnd(uint32_t lo, uint32_t hi) { return lo + (uint32_t)random(hi 
 static const Clip* pick(const Clip* arr, uint8_t n, int8_t& last) {
   if (n == 0) return nullptr;
   int8_t i = random(n);
-  if (n > 1 && i == last) i = (i + 1) % n;
+  if (n > 1 && i == last) i = (i + 1) % n;  // never the same clip twice running
   last = i;
   return &arr[i];
 }
-
-static void rescheduleRare() { rareIdleNeeded = RARE_IDLE_MS + rnd(0, RARE_IDLE_JITTER_MS); }
 
 // Battery cutoff. The rail is protected by the cell PCB; this just stops the load first.
 static void goDead(const char* why) {
@@ -76,131 +65,86 @@ static void goDead(const char* why) {
 
 // ------------------------------------------------------------------ events
 
-static void abortRare() {
-  if (mode != Mode::Rare) return;
-  mode = Mode::Idle;
-  darkUntil = 0;
-  murmurOn = false;
-}
-
-static void onApproach(uint32_t now) {
-  present = true;
-  presentSince = now;
-  goneSince = 0;
-  waitPendingAt = 0;
-  if (!FRIDAY_MODE) {
-    abortRare();
-    audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);  // dead, with a click-free ramp
-    murmurOn = false;
-    eyes.cancelOverlays();
-  }
-  LOG("approach\n");
-}
-
-// Someone has just come into range: the whispers stop dead and the lights go out at once. The rest of
-// the reaction (leave flare, "wait") waits APPROACH_DELAY_MS (see onApproach), so a walk-by just
-// pauses the show.
-static void onNear(uint32_t now) {
-  if (FRIDAY_MODE) return;  // Friday: no hushing, the mask gets agitated instead (see tick)
-  abortRare();
-  audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);
-  murmurOn = false;
-  murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
-  eyes.cancelOverlays();  // and the lights go out at the same instant (see eyesBlocked in tick)
-  LOG("near\n");
-}
-
-static bool isBusy(uint32_t now) {
-  uint8_t n = 0;
-  for (uint8_t i = 0; i < BUSY_LEAVES; i++)
-    if (leaveLog[i] && now - leaveLog[i] < BUSY_WINDOW_MS) n++;
-  return n >= BUSY_LEAVES;
-}
-
-static void onLeave(uint32_t now, bool longEnough) {
-  present = false;
-  lastActivity = now;
-  if (!FRIDAY_MODE) {
+// Tier changed. Looks (noticed / listening / dark) and the murmur level follow `tier` in tick();
+// this handles the one-off bits. Friday ignores the tiers and gets agitated instead (see tick).
+static void onTier(Tier from, Tier to, uint32_t now) {
+  LOG("tier %d -> %d\n", (int)from, (int)to);
+  if (FRIDAY_MODE) return;
+  if (to == TIER_NEAR) {  // the old "approach": the whispers stop dead and the lights go out
+    audio::stop(audio::CH_MURMUR, MURMUR_CUT_MS);
     murmurOn = false;
     murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
+    eyes.cancelOverlays();
   }
-  LOG("leave (long=%d)\n", longEnough);
-  if (!longEnough) return;
-  eyes.flashBoth(FLARE_PEAK, 60, FLARE_HOLD_MS, FLARE_DECAY_MS);
-  leaveLog[leaveHead] = now;
-  leaveHead = (leaveHead + 1) % BUSY_LEAVES;
-  if (now >= waitCooldownUntil && random(WAIT_ODDS) == 0) waitPendingAt = now + WAIT_DELAY_MS;
+}
+
+// Plays one random clip from the reaction pool if the shared cooldown allows. Returns true if it played.
+static bool playReaction(uint32_t now, uint16_t gain) {
+  if (N_REACT == 0 || now < reactCooldownUntil || audio::active(audio::CH_LINES)) return false;
+  const Clip* c = pick(CLIPS_REACT, N_REACT, lastReact);
+  if (!c) return false;
+  audio::play(audio::CH_LINES, *c, false, 30, 0, gain);
+  reactCooldownUntil = now + REACT_COOLDOWN_MS;
+  return true;
+}
+
+static void onLeave(uint32_t now) {
+  LOG("leave\n");
+  eyes.flashBoth(FLARE_PEAK, 60, FLARE_HOLD_MS, FLARE_DECAY_MS);  // always, whether or not a sound follows
+  reactPendingAt = now + REACT_DELAY_MS;
 }
 
 static void onBook(uint32_t now) {
-  abortRare();
   audio::stop(audio::CH_MURMUR, MURMUR_HUSH_MS);  // the voices stop speaking for Whitlock
   murmurOn = false;
   murmurNext = now + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS) + 3000;
   irCooldownUntil = now + IR_COOLDOWN_MS;
-  waitPendingAt = 0;
+  reactPendingAt = 0;
   eyes.flashBoth(1.0f, 0, BOOK_HOLD_MS, BOOK_DECAY_MS);
   const Clip* c = pick(CLIPS_NOTTHAT, N_NOTTHAT, lastNotThat);
   if (c) audio::play(audio::CH_LINES, *c, false, 30);
   LOG("book\n");
 }
 
-static void startRare(uint32_t now) {
-  mode = Mode::Rare;
-  rareStart = now;
-  lastRare = now;
-  rareCount++;
-  audio::setMurmurVoices(MURMUR_VOICES);
-  audio::playMurmur(RARE_SWELL_MS);
-  eyes.flashBoth(1.0f, RARE_SWELL_MS, RARE_HOLD_MS, 1500);
-  murmurOn = false;
-  LOG("rare event\n");
+// Busy mode (someone has stood close for 2+ min): keep the display from sitting dead.
+static void busyEvent(uint32_t now) {
+  bool dark = !FRIDAY_MODE && tier == TIER_NEAR;       // only when the eyes are dark is a glint visible
+  bool glint = dark && random(2) == 0;
+  if (!glint) {
+    if (playReaction(now, BUSY_SOUND_GAIN)) { LOG("busy: sound\n"); return; }
+    if (!dark) return;                                  // sound blocked by the cooldown: skip this round
+  }
+  eyes.flashBoth(BUSY_EYE_PEAK, BUSY_EYE_UP_MS, 0, BUSY_EYE_DOWN_MS, true);
+  LOG("busy: glint\n");
 }
 
 // -------------------------------------------------------------- per-tick work
 
-static bool nearPrev = false;
-
 static void updatePresence(uint32_t now) {
-  bool raw = us.present();
-  if (!present && raw && !nearPrev) onNear(now);
-  nearPrev = raw;
-  if (!present) {
-    if (!raw) {
-      rawSince = 0;
-    } else {
-      if (!rawSince) rawSince = now ? now : 1;
-      if (now - rawSince >= APPROACH_DELAY_MS) {
-        rawSince = 0;
-        onApproach(now);
-      }
-    }
-    return;
+  Presence::Events ev = presence.update(now, us.distanceCm());
+  tier = presence.tier();
+  if (ev.tierChanged) onTier(ev.from, tier, now);
+  if (ev.left) onLeave(now);
+  if (ev.busyStarted) {
+    busyNext = now + rnd(BUSY_EVERY_MIN_MS, BUSY_EVERY_MAX_MS);
+    LOG("busy mode on\n");
   }
-  lastActivity = now;
-  if (raw) {
-    goneSince = 0;
-  } else {
-    if (!goneSince) goneSince = now;
-    if (now - goneSince >= LEAVE_GONE_MS) {
-      bool longEnough = (goneSince - presentSince) >= LEAVE_MIN_PRESENT_MS;
-      onLeave(now, longEnough);
-    }
+  if (ev.busyEnded) LOG("busy mode off\n");
+  if (presence.busy() && now >= busyNext) {
+    busyEvent(now);
+    busyNext = now + rnd(BUSY_EVERY_MIN_MS, BUSY_EVERY_MAX_MS);
   }
 }
 
 static void handleIr(uint32_t now) {
   ir.update(now);
-  if (ir.rose()) {
-    lastActivity = now;
-    if (now >= irCooldownUntil) onBook(now);
-  }
+  if (ir.rose() && now >= irCooldownUntil) onBook(now);
 }
 
-static bool agitatedNow() { return FRIDAY_MODE && (present || us.present()); }
+static bool agitatedNow() { return FRIDAY_MODE && tier >= (Tier)FRIDAY_AGITATE_TIER; }
 
 static void murmurScheduler(uint32_t now) {
-  if ((!FRIDAY_MODE && (present || us.present())) || now < darkUntil) return;
+  if (!FRIDAY_MODE && tier == TIER_NEAR) return;  // NEAR: dead silence
   bool agit = agitatedNow();
   if (agit && murmurOn) audio::setMurmurVoices(MURMUR_VOICES + FRIDAY_EXTRA_VOICES);
   if (!murmurOn && (now >= murmurNext || agit)) {  // Friday: start at once if someone steps up in a gap
@@ -215,37 +159,11 @@ static void murmurScheduler(uint32_t now) {
   }
 }
 
-static void waitScheduler(uint32_t now) {
-  if (!waitPendingAt || now < waitPendingAt) return;
-  waitPendingAt = 0;
-  if (present || audio::active(audio::CH_LINES)) return;
-  const Clip* c = pick(CLIPS_WAIT, N_WAIT, lastWait);
-  if (!c) return;
-  audio::play(audio::CH_LINES, *c, false, 30);
-  waitCooldownUntil = now + (isBusy(now) ? WAIT_COOLDOWN_BUSY_MS : WAIT_COOLDOWN_MS);
-  LOG("wait\n");
-}
-
-static void rareCheck(uint32_t now) {
-  if (mode != Mode::Idle || present || murmurOn || now < darkUntil) return;
-  if (rareCount >= RARE_MAX_PER_BOOT) return;
-  if (rareCount && now - lastRare < RARE_MIN_SPACING_MS) return;
-  if (audio::active(audio::CH_LINES)) return;
-  if (now - lastActivity >= rareIdleNeeded) startRare(now);
-}
-
-static void rareStep(uint32_t now) {
-  if (mode != Mode::Rare) return;
-  uint32_t el = now - rareStart;
-  if (el > RARE_SWELL_MS) el = RARE_SWELL_MS;
-  audio::setMurmurVoices(MURMUR_VOICES + (el * RARE_EXTRA_VOICES) / RARE_SWELL_MS);  // the crowd gathers
-  if (now - rareStart < RARE_SWELL_MS + RARE_HOLD_MS) return;
-  audio::stop(audio::CH_MURMUR, 40);  // then dead silence
-  mode = Mode::Idle;
-  darkUntil = now + 1500 + RARE_SILENCE_MS;
-  murmurNext = darkUntil + rnd(MURMUR_OFF_MIN_MS, MURMUR_OFF_MAX_MS);
-  lastActivity = now;
-  rescheduleRare();
+static void reactionScheduler(uint32_t now) {
+  if (!reactPendingAt || now < reactPendingAt) return;
+  reactPendingAt = 0;
+  if (tier >= TIER_MID) return;  // someone came straight back: no goodbye
+  if (playReaction(now, 0)) LOG("reaction\n");
 }
 
 static void tick(uint32_t now) {
@@ -257,25 +175,29 @@ static void tick(uint32_t now) {
   updatePresence(now);
   handleIr(now);
   murmurScheduler(now);
-  waitScheduler(now);
-  rareCheck(now);
-  rareStep(now);
+  reactionScheduler(now);
 
-  eyesBlocked = (!FRIDAY_MODE && (present || us.present())) || now < darkUntil;
+  // looks and murmur level follow the tier; everything glides so nothing steps
   bool agit = agitatedNow();
   eyes.setAgitated(agit);
-  float gainTarget = agit ? FRIDAY_MURMUR_GAIN : 256.0f;       // glide, so the swell isn't a step
-  murmurGain += (gainTarget - murmurGain) * 0.08f;
+  eyes.setTier(FRIDAY_MODE ? TIER_IDLE : tier);
+  eyesBlocked = !FRIDAY_MODE && tier == TIER_NEAR;
+  float gainTarget = 256.0f;
+  if (FRIDAY_MODE) {
+    if (agit) gainTarget = FRIDAY_MURMUR_GAIN;
+  } else if (tier == TIER_MID) {
+    gainTarget = 256.0f * LISTEN_MURMUR_LEVEL;       // "listening": the whispers duck
+  }
+  murmurGain += (gainTarget - murmurGain) * GAIN_SMOOTH;
   audio::setMurmurGain((uint16_t)murmurGain);
   audio::service(now);
 
 #if DEBUG_LOG
   if (now - lastLog >= 2000) {
     lastLog = now;
-    LOG("d=%.0fcm echoes=%lu timeouts=%lu pulse=%luus present=%d ir=%d mode=%d | pins: echo=%d irpin=%d\n",
-        us.distanceCm(), (unsigned long)us.echoes(), (unsigned long)us.timeouts(),
-        (unsigned long)us.lastPulseUs(), present, ir.present(), (int)mode,
-        digitalRead(PIN_US_ECHO), digitalRead(PIN_IR));
+    LOG("d=%.0fcm tier=%d busy=%d echoes=%lu timeouts=%lu ir=%d | pins: echo=%d irpin=%d\n",
+        us.distanceCm(), (int)tier, presence.busy(), (unsigned long)us.echoes(), (unsigned long)us.timeouts(),
+        ir.present(), digitalRead(PIN_US_ECHO), digitalRead(PIN_IR));
   }
 #endif
 }
@@ -299,9 +221,7 @@ void setup() {
   bat.begin();
 
   uint32_t now = millis();
-  lastActivity = now;
   murmurNext = now + rnd(STARTUP_MURMUR_MIN_MS, STARTUP_MURMUR_MAX_MS);
-  rescheduleRare();
   LOG("whitlock up\n");
 }
 
@@ -311,7 +231,7 @@ void loop() {
   audio::pump();
   if (now - lastEyes >= EYE_UPDATE_MS) {  // eyes update at 200 Hz for smooth flicker and dithering
     lastEyes = now;
-    eyes.update(now, eyesBlocked, EYE_APPROACH_FADE_MS);
+    eyes.update(now, eyesBlocked, EYE_NEAR_FADE_MS);
   }
   if (now - lastTick >= 20) {  // 50 Hz
     lastTick = now;

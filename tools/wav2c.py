@@ -2,8 +2,9 @@
 """Convert WAV files to 8 kHz unsigned 8-bit PCM C arrays for the flash-resident audio.
 
 Layout (folders under --in):
-    audio/notthat/*.wav   "not that one" + variants
-    audio/wait/*.wav      "wait"
+    audio/notthat/*.wav    book pool: "not that one" and variants (one is picked at random)
+    audio/reaction/*.wav   reaction pool: wait, stay, dont_go, please, r_breath, r_sigh ...
+                           (one is picked at random when someone leaves / in busy mode)
 
     python3 tools/wav2c.py                 # real audio
     python3 tools/wav2c.py --placeholder   # synthesise stand-ins so the firmware builds
@@ -25,7 +26,7 @@ RATE = 8000
 # folder, C suffix, crossfade-for-loop
 CATEGORIES = [
     ("notthat", "NOTTHAT", False),
-    ("wait", "WAIT", False),
+    ("reaction", "REACT", False),
 ]
 
 
@@ -140,10 +141,29 @@ def synth_tone(seconds, f0, f1):
     return out
 
 
+def synth_breath(seconds, seed, rise=0.4, fall_to=0.0):
+    """A breathy puff: low-passed noise with a slow swell and decay (fall_to>0 gives a sigh's drop)."""
+    rng = random.Random(seed)
+    n = int(seconds * RATE)
+    y, out = 0.0, []
+    for i in range(n):
+        u = i / n
+        env = (u / rise) if u < rise else (1 - (u - rise) / (1 - rise))
+        a = 0.25 - 0.17 * u * fall_to   # a sigh's pitch (filter) sinks as it goes
+        y += a * (rng.uniform(-1, 1) - y)
+        out.append(y * max(0.0, env) ** 1.5)
+    return out
+
+
 def placeholders():
     return {
-        "notthat": [(f"placeholder_notthat_{i}", synth_tone(0.9, 300 - 40 * i, 200 - 30 * i)) for i in range(3)],
-        "wait": [("placeholder_wait", synth_tone(0.7, 180, 240))],
+        "notthat": [(f"placeholder_notthat_{i}", synth_tone(0.9, 300 - 40 * i, 200 - 30 * i)) for i in range(4)],
+        "reaction": [("placeholder_wait", synth_tone(0.7, 180, 240)),
+                     ("placeholder_stay", synth_tone(0.8, 220, 160)),
+                     ("placeholder_dont_go", synth_tone(0.9, 260, 190)),
+                     ("placeholder_please", synth_tone(0.8, 200, 300)),
+                     ("placeholder_r_breath", synth_breath(1.4, 5)),
+                     ("placeholder_r_sigh", synth_breath(1.8, 6, rise=0.25, fall_to=1.0))],
     }
 
 
@@ -205,8 +225,12 @@ def main():
                 clips[folder].append((f.name, quantise(process(x, sr, loop, args.peak), not args.no_dither)))
             print(f"{folder:8s} {len(files)} clip(s)")
     total = emit(clips, args.out, not args.no_dither)
-    print(f"wrote {args.out}: {total} bytes audio = {total / RATE:.0f} s "
-          f"(app partition holds ~3.7 MB incl. code)")
+    PARTITION = 0x3F0000          # app slot in partitions.csv
+    CODE_ESTIMATE = 460_000       # firmware without audio, roughly
+    room = PARTITION - CODE_ESTIMATE
+    print(f"wrote {args.out}: {total} bytes of audio = {total / RATE:.0f} s")
+    print(f"flash: about {room} bytes free for audio after the firmware "
+          f"({total * 100 / room:.0f}% used); script budget {args.budget} bytes")
     if total > args.budget:
         sys.exit(f"ERROR: over budget ({total} > {args.budget}). Shorten or drop clips.")
 

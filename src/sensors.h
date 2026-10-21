@@ -14,13 +14,12 @@ struct Debounced {
   }
 };
 
-// HC-SR04: non-blocking (echo timed in an edge ISR), median of the last few pings,
-// hysteresis between US_ENTER_CM and US_EXIT_CM.
+// HC-SR04: non-blocking (echo timed in an edge ISR), median of the last few pings.
+// Tiers / hysteresis live in presence.h.
 class Ultrasonic {
  public:
   void begin();
   void update(uint32_t now);
-  bool present() const { return present_; }
   float distanceCm() const { return median_; }
   // diagnostics: echoes seen, timeouts, last echo pulse width in microseconds
   uint32_t echoes() const { return echoes_; }
@@ -32,7 +31,6 @@ class Ultrasonic {
   float samples_[US_WINDOW];
   uint8_t head_ = 0;
   float median_ = US_NO_ECHO_CM;
-  bool present_ = false;
   bool waiting_ = false;
   uint32_t lastPing_ = 0;
   uint32_t echoes_ = 0, timeouts_ = 0, lastPulse_ = 0;
