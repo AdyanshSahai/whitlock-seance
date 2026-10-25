@@ -24,7 +24,8 @@ constexpr uint8_t PIN_PERIPH_EN     = 13;  // HIGH = switched 5V rail on (only i
 // TEST_MODE 1 squeezes every timer so each behaviour fires within seconds. Set 0 for the install.
 #define TEST_MODE 1
 #define TV(normal, test) ((TEST_MODE) ? (test) : (normal))
-#define BATTERY_CUTOFF (!TEST_MODE)  // off on the USB bench: with no cell the sense pin floats
+#define BATTERY_CUTOFF 0            // 1 only if you wired the battery divider to GPIO1. It is NOT wired on this build:
+                                    // a floating pin reads as a dead cell and would shut the display down after ~15 s
 #define DEBUG_LOG 1                 // serial status every 2s; set 0 for the install
 #define USE_PERIPH_SWITCH 0         // 1 if you built the P-FET switched 5V rail (bare cells)
 #define USE_AMP_SD 1                // 0 if your PAM8302 clones have no usable SD pin
